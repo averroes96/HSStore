@@ -319,4 +319,20 @@ public class DBHandler extends SQLiteOpenHelper {
             Toast.makeText(context, "Position added", Toast.LENGTH_LONG).show();
 
     }
+
+    public boolean updatePosition(Depot depot) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_REF, depot.get_reference());
+        values.put(COLUMN_LOCATION, depot.get_location());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        long res = db.update(T_SELL, values, "id = ?", new String[]{String.valueOf(depot.get_id())});
+
+        if(res == -1)
+            Toast.makeText(context, "Erreur de base de données lors de l\'ajout du position", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(context, "Position updated", Toast.LENGTH_LONG).show();
+
+        return  res != -1;
+    }
 }

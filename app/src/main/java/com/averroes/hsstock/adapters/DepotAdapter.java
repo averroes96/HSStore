@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.averroes.hsstock.R;
+import com.averroes.hsstock.activities.UpdatePositionActivity;
 import com.averroes.hsstock.models.Depot;
 
 import java.util.ArrayList;
@@ -49,14 +51,19 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(context, UpdateSellActivity.class);
-                intent.putExtra("sell_id", String.valueOf(sells.get(position).get_id()));
-                intent.putExtra("prod_id", String.valueOf(sells.get(position).getProduct().get_id()));
-                intent.putExtra("price", String.valueOf(sells.get(position).get_price()));
-                intent.putExtra("ref", String.valueOf(sells.get(position).getProduct().get_name()));
-                intent.putExtra("size", String.valueOf(sells.get(position).getProduct().get_size()));
-                intent.putExtra("color", String.valueOf(sells.get(position).getProduct().get_color()));
-                activity.startActivityForResult(intent, 1);*/
+                Intent intent = new Intent(context, UpdatePositionActivity.class);
+                intent.putExtra("id", String.valueOf(depots.get(position).get_id()));
+                intent.putExtra("reference", String.valueOf(depots.get(position).get_reference()));
+                intent.putExtra("position", String.valueOf(depots.get(position).get_location()));
+                activity.startActivityForResult(intent, 1);
+            }
+        });
+
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                depots.remove(position);
+                notifyDataSetChanged();
             }
         });
     }
@@ -67,22 +74,22 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
     }
 
     public void filteredList(ArrayList<Depot> filteredList) {
-
         depots = filteredList;
         notifyDataSetChanged();
-
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView referenceTV,locationTV;
         private LinearLayout layout;
+        private ImageButton deleteBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             layout = itemView.findViewById(R.id.mainLayout);
             referenceTV = itemView.findViewById(R.id.referenceTV);
             locationTV = itemView.findViewById(R.id.locationTV);
+            deleteBtn = itemView.findViewById(R.id.deleteBtn);
             animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             layout.setAnimation(animation);
         }

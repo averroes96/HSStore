@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HSStock</string>
+    <string name="app_name">HSStore</string>
     <string name="search">Recherche (Reference)</string>
     <string name="reference">Reference</string>
     <string name="add">Ajouter</string>

@@ -209,7 +209,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
         String[] options = { "Camera", "Gallery"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.pick_image_intent_chooser_title)
+        builder.setTitle("Pick image")
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

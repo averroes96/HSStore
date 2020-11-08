@@ -264,7 +264,7 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
         String[] options = { "Camera", "Gallery"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.pick_image_intent_chooser_title)
+        builder.setTitle("choisissez une image")
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
