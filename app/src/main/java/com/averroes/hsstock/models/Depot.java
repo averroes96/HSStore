@@ -1,5 +1,7 @@
 package com.averroes.hsstock.models;
 
+import androidx.annotation.NonNull;
+
 public class Depot {
 
     private int _id;
@@ -42,5 +44,11 @@ public class Depot {
 
     public void set_location(String _location) {
         this._location = _location;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return _reference + " => " + _location;
     }
 }

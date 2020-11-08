@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Depot;
-import com.averroes.hsstock.models.Product;
-import com.averroes.hsstock.models.Sell;
 
 public class UpdatePositionActivity extends AppCompatActivity {
 
@@ -32,9 +30,11 @@ public class UpdatePositionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_position);
 
         backBtn = findViewById(R.id.backBtn);
-        referenceET = findViewById(R.id.referencesET);
+        referenceET = findViewById(R.id.referenceET);
         positionET = findViewById(R.id.positionET);
         updateBtn = findViewById(R.id.updateBtn);
+
+        dbHandler = new DBHandler(this);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +65,6 @@ public class UpdatePositionActivity extends AppCompatActivity {
                     getIntent().getStringExtra("position")
             );
 
-
             referenceET.setText(selectedDepot.get_reference());
             positionET.setText(String.valueOf(selectedDepot.get_location()));
 
@@ -95,6 +94,5 @@ public class UpdatePositionActivity extends AppCompatActivity {
         );
 
         return dbHandler.updatePosition(depot);
-
     }
 }

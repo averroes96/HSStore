@@ -73,12 +73,12 @@
         android:drawableStart="@drawable/ic_location_grey"
         android:ems="10"
         android:hint="@string/position"
-        android:inputType="numberDecimal"
+        android:inputType="textCapSentences"
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/referencesET" />
+        app:layout_constraintTop_toBottomOf="@+id/referenceET" />
 
 
     <Button

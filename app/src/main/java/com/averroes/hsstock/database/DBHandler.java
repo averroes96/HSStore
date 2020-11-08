@@ -204,7 +204,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if(res == -1)
             Toast.makeText(context, "Erreur de base de données lors de suppression d'achat", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(context, "Product deleted", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Vend deleted", Toast.LENGTH_LONG).show();
 
     }
 
@@ -326,7 +326,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_LOCATION, depot.get_location());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        long res = db.update(T_SELL, values, "id = ?", new String[]{String.valueOf(depot.get_id())});
+        long res = db.update(T_DEPOT, values, "id = ?", new String[]{String.valueOf(depot.get_id())});
 
         if(res == -1)
             Toast.makeText(context, "Erreur de base de données lors de l\'ajout du position", Toast.LENGTH_LONG).show();
@@ -334,5 +334,17 @@ public class DBHandler extends SQLiteOpenHelper {
             Toast.makeText(context, "Position updated", Toast.LENGTH_LONG).show();
 
         return  res != -1;
+    }
+
+    public void deleteDepot(Depot depot){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        long res = db.delete(T_DEPOT, "id = ?", new String[]{String.valueOf(depot.get_id())});
+        if(res == -1)
+            Toast.makeText(context, "Erreur de base de données lors de suppression d'achat", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(context, "Depot deleted", Toast.LENGTH_LONG).show();
+
     }
 }
