@@ -1,7 +1,9 @@
 package com.averroes.hsstock.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,7 +18,7 @@ import com.averroes.hsstock.models.Depot;
 
 public class UpdatePositionActivity extends AppCompatActivity {
 
-    private ImageButton backBtn;
+    private ImageButton backBtn,deleteBtn;
     private EditText referenceET,positionET;
     private Button updateBtn;
 
@@ -30,6 +32,7 @@ public class UpdatePositionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_position);
 
         backBtn = findViewById(R.id.backBtn);
+        deleteBtn = findViewById(R.id.deleteBtn);
         referenceET = findViewById(R.id.referenceET);
         positionET = findViewById(R.id.positionET);
         updateBtn = findViewById(R.id.updateBtn);
@@ -43,10 +46,16 @@ public class UpdatePositionActivity extends AppCompatActivity {
             }
         });
 
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmDialog();
+            }
+        });
+
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 boolean res = updateDepot();
                 if(res)
                     finish();
@@ -94,5 +103,30 @@ public class UpdatePositionActivity extends AppCompatActivity {
         );
 
         return dbHandler.updatePosition(depot);
+    }
+
+    private void confirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Supprimer: " + selectedDepot.toString());
+        builder.setMessage("Etes-vous sûr que vous voulez supprimer " + selectedDepot.get_reference() + " de position " + selectedDepot.get_location());
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteDepot();
+                finish();
+            }
+        });
+        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.create().show();
+    }
+
+    private void deleteDepot() {
+        dbHandler.deleteDepot(selectedDepot);
     }
 }

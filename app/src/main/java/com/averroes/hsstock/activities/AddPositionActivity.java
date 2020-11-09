@@ -43,7 +43,7 @@ public class AddPositionActivity extends AppCompatActivity {
 
         dbHandler = new DBHandler(this);
         
-        addBtn.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();

@@ -66,12 +66,6 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
             }
         });
 
-        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                confirmDialog(depots.get(position), position);
-            }
-        });
     }
 
     @Override
@@ -88,43 +82,16 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
 
         private TextView referenceTV,locationTV;
         private LinearLayout layout;
-        private ImageButton deleteBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             layout = itemView.findViewById(R.id.mainLayout);
             referenceTV = itemView.findViewById(R.id.referenceTV);
             locationTV = itemView.findViewById(R.id.locationTV);
-            deleteBtn = itemView.findViewById(R.id.deleteBtn);
             animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             layout.setAnimation(animation);
 
         }
     }
 
-    private void confirmDialog(final Depot depot, final int pos) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Supprimer: " + depot.toString());
-        builder.setMessage("Etes-vous sûr que vous voulez supprimer " + depot.get_reference() + " de position " + depot.get_location());
-        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                deleteDepot(depot, pos);
-            }
-        });
-        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        builder.create().show();
-    }
-
-    private void deleteDepot(Depot depot, int position) {
-        dbHandler.deleteDepot(depot);
-        depots.remove(position);
-        notifyDataSetChanged();
-    }
 }
