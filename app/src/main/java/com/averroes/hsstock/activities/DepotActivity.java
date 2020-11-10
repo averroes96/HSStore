@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class DepotActivity extends AppCompatActivity {
     private RecyclerView locationsRV;
     private ImageView empty;
     private TextView nodata;
+    private Spinner searchSpinner;
 
     private ArrayList<Depot> depots;
     private DBHandler dbHandler;
@@ -47,6 +49,7 @@ public class DepotActivity extends AppCompatActivity {
         locationsRV = findViewById(R.id.locationsRV);
         empty = findViewById(R.id.empty);
         nodata = findViewById(R.id.nodata);
+        searchSpinner = findViewById(R.id.searchSpinner);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();

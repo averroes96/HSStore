@@ -31,10 +31,10 @@ import com.averroes.hsstock.interfaces.StorageMethods;
 
 public class UpdateProductActivity extends AppCompatActivity implements CameraMethods, StorageMethods {
 
-    private ImageButton back;
+    private ImageButton back,delete;
     private ImageView image;
     private EditText reference, size, color;
-    private Button update,delete;
+    private Button update;
 
     private Uri imageUri;
 
@@ -134,8 +134,10 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
             reference.setText(getIntent().getStringExtra("ref"));
             size.setText(getIntent().getStringExtra("size"));
             color.setText(getIntent().getStringExtra("color"));
-            image.setImageURI(Uri.parse(getIntent().getStringExtra("image")));
-            imageUri = Uri.parse(getIntent().getStringExtra("image"));
+            if(getIntent().getStringExtra("image").equals("")) {
+                image.setImageURI(Uri.parse(getIntent().getStringExtra("image")));
+                imageUri = Uri.parse(getIntent().getStringExtra("image"));
+            }
         }
         else{
             Toast.makeText(this, "No data !", Toast.LENGTH_LONG).show();

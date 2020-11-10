@@ -19,9 +19,9 @@ import com.averroes.hsstock.models.Sell;
 
 public class UpdateSellActivity extends AppCompatActivity {
 
-    private ImageButton back;
+    private ImageButton back,delete;
     private EditText reference, size, color, price;
-    private Button update,delete;
+    private Button update;
 
     private String referenceText,colorText, sizeNumber,priceNumber;
     private Sell selectedSell;
