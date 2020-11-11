@@ -77,5 +77,7 @@ public class AddPositionActivity extends AppCompatActivity {
             );
         }
 
+        Toast.makeText(this, "Positions ajouté(s)", Toast.LENGTH_LONG).show();
+
     }
 }

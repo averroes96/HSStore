@@ -64,53 +64,81 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraintLayout"
             android:id="@+id/searchLayout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32sp"
+            android:gravity="center"
+            android:padding="8dp"
             android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout">
 
             <EditText
                 android:id="@+id/searchET"
-                android:layout_width="300dp"
+                android:layout_width="256sp"
                 android:layout_height="48sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_rectangle"
                 android:drawableStart="@drawable/ic_search_grey"
                 android:ems="10"
                 android:hint="@string/search"
                 android:inputType="textPersonName"
-                android:padding="8sp"
-                android:layout_weight="1"
-                app:layout_constraintEnd_toStartOf="@id/searchSpinner"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                android:padding="8sp" />
 
             <Spinner
                 android:id="@+id/searchSpinner"
-                android:layout_width="160sp"
-                android:layout_weight="1"
+                android:layout_width="160dp"
                 android:layout_height="48sp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/searchET"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                android:layout_weight="1" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/statsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchLayout">
+
+            <TextView
+                android:id="@+id/countTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                app:layout_constraintHorizontal_bias="0.163"/>
+
+            <TextView
+                android:id="@+id/duplicateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                app:layout_constraintHorizontal_bias="0.801" />
 
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/locationsRV"
             android:layout_width="match_parent"
-            android:layout_height="563dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32sp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchLayout"
+            app:layout_constraintTop_toBottomOf="@+id/statsLayout"
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageView

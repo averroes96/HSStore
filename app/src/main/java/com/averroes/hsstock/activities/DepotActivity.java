@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,23 +27,29 @@ import com.averroes.hsstock.models.Depot;
 
 import java.util.ArrayList;
 
-public class DepotActivity extends AppCompatActivity {
+public class DepotActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private ImageButton backBtn,addLocationBtn;
     private EditText searchET;
     private RecyclerView locationsRV;
     private ImageView empty;
-    private TextView nodata;
+    private TextView nodata,countTV,duplicateTV;
     private Spinner searchSpinner;
 
     private ArrayList<Depot> depots;
     private DBHandler dbHandler;
     private DepotAdapter adapter;
+    private String currentSearchType = "ref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_depot);
+
+        String[] types = {
+                "REF",
+                "POS"
+        };
 
         backBtn = findViewById(R.id.backBtn);
         addLocationBtn = findViewById(R.id.addLocationBtn);
@@ -50,9 +58,19 @@ public class DepotActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty);
         nodata = findViewById(R.id.nodata);
         searchSpinner = findViewById(R.id.searchSpinner);
+        countTV =  findViewById(R.id.countTV);
+        duplicateTV = findViewById(R.id.duplicateTV);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();
+
+        searchSpinner.setOnItemSelectedListener(this);
+
+        //Creating the ArrayAdapter instance having the country list
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,types);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        searchSpinner.setAdapter(aa);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +109,9 @@ public class DepotActivity extends AppCompatActivity {
         locationsRV.setAdapter(adapter);
         locationsRV.setLayoutManager(new LinearLayoutManager(DepotActivity.this));
         adapter.notifyDataSetChanged();
+
+        countTV.setText(adapter.getItemCount() + " Reference(s)");
+        duplicateTV.setText(adapter.getDuplicatesCount() + " duplicate(s)");
     }
 
     private void getData() {
@@ -133,12 +154,21 @@ public class DepotActivity extends AppCompatActivity {
         ArrayList<Depot> filteredList = new ArrayList<>();
 
         for (Depot depot : depots) {
-            if (depot.get_reference().toLowerCase().trim().contains(text.toLowerCase())) {
-                filteredList.add(depot);
+            if(currentSearchType.equals("ref")) {
+                if (depot.get_reference().toLowerCase().trim().contains(text.toLowerCase())) {
+                    filteredList.add(depot);
+                }
+            }
+            else{
+                if (depot.get_location().toLowerCase().trim().contains(text.toLowerCase())) {
+                    filteredList.add(depot);
+                }
             }
         }
 
         adapter.filteredList(filteredList);
+        countTV.setText(adapter.getItemCount() + " Reference(s)");
+        duplicateTV.setText(adapter.getDuplicatesCount() + " duplicate(s)");
 
         if(filteredList.size() == 0){
             empty.setVisibility(View.VISIBLE);
@@ -157,5 +187,18 @@ public class DepotActivity extends AppCompatActivity {
             recreate();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(i == 0)
+            currentSearchType = "ref";
+        if(i == 1)
+            currentSearchType = "pos";
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

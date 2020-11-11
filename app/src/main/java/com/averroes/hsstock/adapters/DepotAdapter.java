@@ -73,6 +73,16 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
         return depots.size();
     }
 
+    public int getDuplicatesCount(){
+        ArrayList<String> temp = new ArrayList<>();
+        for(Depot depot: depots){
+            if(!temp.contains(depot.get_reference()))
+                temp.add(depot.get_reference());
+        }
+
+        return depots.size() - temp.size();
+    }
+
     public void filteredList(ArrayList<Depot> filteredList) {
         depots = filteredList;
         notifyDataSetChanged();

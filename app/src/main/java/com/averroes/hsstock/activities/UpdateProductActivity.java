@@ -134,7 +134,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
             reference.setText(getIntent().getStringExtra("ref"));
             size.setText(getIntent().getStringExtra("size"));
             color.setText(getIntent().getStringExtra("color"));
-            if(getIntent().getStringExtra("image").equals("")) {
+            if(!getIntent().getStringExtra("image").equals("")) {
                 image.setImageURI(Uri.parse(getIntent().getStringExtra("image")));
                 imageUri = Uri.parse(getIntent().getStringExtra("image"));
             }

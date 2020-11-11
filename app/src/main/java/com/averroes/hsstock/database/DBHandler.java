@@ -222,7 +222,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Cursor readAllData(){
 
-        String query = "SELECT * FROM " + T_PRODUCT + " WHERE " + COLUMN_SOLD + " = ? ORDER BY " + COLUMN_NAME ;
+        String query = "SELECT id,name,size,color,image FROM " + T_PRODUCT + " WHERE " + COLUMN_SOLD + " = ? ORDER BY " + COLUMN_NAME ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -305,7 +305,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void addPosition(Depot depot){
+    public long addPosition(Depot depot){
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_REF, depot.get_reference());
@@ -315,8 +315,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if(res == -1)
             Toast.makeText(context, "Erreur de base de données lors de l\'ajout du position", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(context, "Position added", Toast.LENGTH_LONG).show();
+
+        return res;
 
     }
 

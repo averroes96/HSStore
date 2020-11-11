@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -147,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 products.clear();
 
                 while(cursor.moveToNext()){
-
                     Product product = new Product();
                     product.set_id(cursor.getInt(0));
                     product.set_name(cursor.getString(1));
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                     product.set_size(cursor.getInt(2));
                     product.set_image(cursor.getString(4));
                     products.add(product);
-
                 }
 
             }
