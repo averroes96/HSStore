@@ -1,10 +1,12 @@
 package com.averroes.hsstock.activities;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,14 +29,13 @@ import com.averroes.hsstock.models.Depot;
 
 import java.util.ArrayList;
 
-public class DepotActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class DepotActivity extends AppCompatActivity {
 
     private ImageButton backBtn,addLocationBtn;
     private EditText searchET;
     private RecyclerView locationsRV;
     private ImageView empty;
-    private TextView nodata,countTV,duplicateTV;
-    private Spinner searchSpinner;
+    private TextView nodata,countTV,duplicateTV,filterTV;
 
     private ArrayList<Depot> depots;
     private DBHandler dbHandler;
@@ -57,20 +58,12 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
         locationsRV = findViewById(R.id.locationsRV);
         empty = findViewById(R.id.empty);
         nodata = findViewById(R.id.nodata);
-        searchSpinner = findViewById(R.id.searchSpinner);
         countTV =  findViewById(R.id.countTV);
         duplicateTV = findViewById(R.id.duplicateTV);
+        filterTV = findViewById(R.id.filterTV);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();
-
-        searchSpinner.setOnItemSelectedListener(this);
-
-        //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,types);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        searchSpinner.setAdapter(aa);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +95,14 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
 
             }
         });
+        
+        filterTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFilterDialog();
+            }
+        });
+        filterTV.setText(getResources().getStringArray(R.array.filter_types)[0]);
 
         getData();
 
@@ -112,6 +113,19 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
 
         countTV.setText(adapter.getItemCount() + " Reference(s)");
         duplicateTV.setText(adapter.getDuplicatesCount() + " duplicate(s)");
+    }
+
+    private void openFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.filter_criteria))
+                .setItems(R.array.filter_types, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String[] array = getResources().getStringArray(R.array.filter_types);
+                        filterTV.setText(array[i]);
+                    }
+                })
+                .create().show();
     }
 
     private void getData() {
@@ -125,14 +139,11 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
                 nodata.setVisibility(View.VISIBLE);
             }
             else{
-
                 empty.setVisibility(View.GONE);
                 nodata.setVisibility(View.GONE);
-
                 depots.clear();
 
                 while(cursor.moveToNext()){
-
                     Depot depot = new Depot(
                             cursor.getInt(0),
                             cursor.getString(1),
@@ -140,11 +151,8 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
                     );
 
                     depots.add(depot);
-
                 }
-
             }
-
         }
         else
             Toast.makeText(this, "Erreur de la base de données", Toast.LENGTH_LONG).show();
@@ -154,7 +162,7 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
         ArrayList<Depot> filteredList = new ArrayList<>();
 
         for (Depot depot : depots) {
-            if(currentSearchType.equals("ref")) {
+            if(filterTV.getText().equals(getResources().getStringArray(R.array.filter_types)[0])) {
                 if (depot.get_reference().toLowerCase().trim().contains(text.toLowerCase())) {
                     filteredList.add(depot);
                 }
@@ -187,18 +195,5 @@ public class DepotActivity extends AppCompatActivity implements AdapterView.OnIt
             recreate();
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if(i == 0)
-            currentSearchType = "ref";
-        if(i == 1)
-            currentSearchType = "pos";
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 }

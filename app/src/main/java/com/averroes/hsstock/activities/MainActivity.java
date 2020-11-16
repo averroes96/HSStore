@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
         if(filteredList.size() == 0){
             empty.setVisibility(View.VISIBLE);
             nodata.setVisibility(View.VISIBLE);
-        }else{
+        }
+        else{
             empty.setVisibility(View.GONE);
             nodata.setVisibility(View.GONE);
         }
