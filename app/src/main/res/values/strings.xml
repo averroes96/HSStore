@@ -11,8 +11,10 @@
     <string name="references">References (séparer par virgule)</string>
     <string name="position">Position</string>
     <string name="filter_criteria">Filtrage par rapport :</string>
+    <string name="store">Depot</string>
+    <string name="positions">Les positions</string>
     <string-array name="filter_types">
-        <item name ="ref">REF</item>
+        <item name="ref">REF</item>
         <item name="pos">POS</item>
     </string-array>
 </resources>

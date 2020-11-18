@@ -13,12 +13,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +28,7 @@ import java.util.ArrayList;
 
 public class DepotActivity extends AppCompatActivity {
 
-    private ImageButton backBtn,addLocationBtn;
+    private ImageButton backBtn,addLocationBtn,positionsBtn;
     private EditText searchET;
     private RecyclerView locationsRV;
     private ImageView empty;
@@ -61,6 +58,7 @@ public class DepotActivity extends AppCompatActivity {
         countTV =  findViewById(R.id.countTV);
         duplicateTV = findViewById(R.id.duplicateTV);
         filterTV = findViewById(R.id.filterTV);
+        positionsBtn = findViewById(R.id.positionsBtn);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();
@@ -69,6 +67,15 @@ public class DepotActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        positionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(
+                        new Intent(DepotActivity.this, PositionsActivity.class),
+                        3);
             }
         });
 

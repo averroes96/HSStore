@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activities.PositionsActivity"></activity>
         <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +23,9 @@
         </activity>
         <activity android:name=".activities.UpdatePositionActivity" />
         <activity android:name=".activities.AddPositionActivity" />
-        <activity android:name=".activities.DepotActivity" />
+        <activity
+            android:name=".activities.DepotActivity"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.UpdateSellActivity"
             android:parentActivityName=".activities.SellsActivity" />
@@ -38,7 +41,7 @@
         <activity
             android:name=".activities.AddProductActivity"
             android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.MainActivity"/>
+        <activity android:name=".activities.MainActivity" />
     </application>
 
 </manifest>
