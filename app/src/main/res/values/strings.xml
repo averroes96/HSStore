@@ -12,7 +12,16 @@
     <string name="position">Position</string>
     <string name="filter_criteria">Filtrage par rapport :</string>
     <string name="store">Depot</string>
-    <string name="positions">Les positions</string>
+    <string name="positions">Positions</string>
+    <string name="the_positions">Les positions</string>
+    <string name="references2">Reference(s)</string>
+    <string name="update_position">Modifier position</string>
+    <string name="enter_refs">Entrez les references svp !</string>
+    <string name="position_updated">Positions modifiées</string>
+    <string name="two_points_space">": "</string>
+    <string name="delete_confirm_msg">"Etes-vous sûr que vous voulez supprimer "</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
     <string-array name="filter_types">
         <item name="ref">REF</item>
         <item name="pos">POS</item>

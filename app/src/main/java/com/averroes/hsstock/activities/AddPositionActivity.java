@@ -69,7 +69,7 @@ public class AddPositionActivity extends AppCompatActivity {
         }
 
         for(String ref : references) {
-            dbHandler.addPosition(
+            dbHandler.addDepot(
                     new Depot(
                             ref,
                             positionText

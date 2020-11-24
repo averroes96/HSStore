@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,16 +14,22 @@ import android.widget.Toast;
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Depot;
+import com.averroes.hsstock.models.Position;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class UpdatePositionActivity extends AppCompatActivity {
 
     private ImageButton backBtn,deleteBtn;
-    private EditText referenceET,positionET;
-    private Button updateBtn;
+    private EditText referencesET,positionET;
+    private Button editBtn;
 
-    private String referenceText,positionText;
-    private Depot selectedDepot;
+    private String positionText,initialPosition;
+    private List<String> initialRefs,references;
     private DBHandler dbHandler;
+    private Position selectedPosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,10 @@ public class UpdatePositionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_position);
 
         backBtn = findViewById(R.id.backBtn);
-        deleteBtn = findViewById(R.id.deleteBtn);
-        referenceET = findViewById(R.id.referenceET);
+        referencesET = findViewById(R.id.referencesET);
         positionET = findViewById(R.id.positionET);
-        updateBtn = findViewById(R.id.updateBtn);
+        editBtn = findViewById(R.id.editBtn);
+        deleteBtn = findViewById(R.id.deleteBtn);
 
         dbHandler = new DBHandler(this);
 
@@ -46,6 +51,14 @@ public class UpdatePositionActivity extends AppCompatActivity {
             }
         });
 
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updatePosition();
+                finish();
+            }
+        });
+
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,70 +66,21 @@ public class UpdatePositionActivity extends AppCompatActivity {
             }
         });
 
-        updateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean res = updateDepot();
-                if(res)
-                    finish();
-            }
-        });
-
         getIntentData();
-    }
-
-    private void getIntentData() {
-        if(getIntent().hasExtra("id") && getIntent().hasExtra("reference") && getIntent().hasExtra("position")){
-
-            selectedDepot = new Depot(
-                    Integer.parseInt(getIntent().getStringExtra("id")),
-                    getIntent().getStringExtra("reference"),
-                    getIntent().getStringExtra("position")
-            );
-
-            referenceET.setText(selectedDepot.get_reference());
-            positionET.setText(String.valueOf(selectedDepot.get_location()));
-
-        }
-        else{
-            Toast.makeText(this, "No data !", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private boolean updateDepot() {
-        referenceText = referenceET.getText().toString().trim();
-        positionText = positionET.getText().toString().trim();
-
-        if(TextUtils.isEmpty(referenceText)){
-            Toast.makeText(this, "Entrez la référence du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if(TextUtils.isEmpty(positionText)){
-            Toast.makeText(this, "Entrez la position du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        Depot depot = new Depot(
-                Integer.parseInt(getIntent().getStringExtra("id")),
-                referenceText,
-                positionText
-        );
-
-        return dbHandler.updatePosition(depot);
     }
 
     private void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Supprimer: " + selectedDepot.toString());
-        builder.setMessage("Etes-vous sûr que vous voulez supprimer " + selectedDepot.get_reference() + " de position " + selectedDepot.get_location());
-        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.delete) + R.string.two_points_space + selectedPosition.toString());
+        builder.setMessage(getString(R.string.delete_confirm_msg) + selectedPosition);
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                deleteDepot();
+                deletePosition();
                 finish();
             }
         });
-        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -126,7 +90,57 @@ public class UpdatePositionActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void deleteDepot() {
-        dbHandler.deleteDepot(selectedDepot);
+    private void deletePosition() {
+
+        for(String ref : initialRefs) {
+            dbHandler.removeDepot(
+                    new Depot(
+                            ref,
+                            initialPosition
+                    )
+            );
+        }
+
+    }
+
+    private void getIntentData() {
+        if(getIntent().hasExtra("name") && getIntent().hasExtra("references")){
+            initialRefs = Arrays.asList(getIntent().getStringExtra("references").split(","));
+            initialPosition = getIntent().getStringExtra("name");
+            referencesET.setText(getIntent().getStringExtra("references"));
+            positionET.setText(getIntent().getStringExtra("name"));
+
+            selectedPosition = new Position(
+                    getIntent().getStringExtra("name"),
+                    getIntent().getStringExtra("references")
+            );
+        }
+        else{
+            Toast.makeText(this, "No data !", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updatePosition() {
+
+        positionText = positionET.getText().toString().trim();
+        references = Arrays.asList(referencesET.getText().toString().trim().split(","));
+
+        if(references.isEmpty()){
+            Toast.makeText(this, R.string.enter_refs, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        deletePosition();
+
+        for(String ref : references) {
+            dbHandler.addDepot(
+                    new Depot(
+                            ref,
+                            positionText
+                    )
+            );
+        }
+
+        Toast.makeText(this, R.string.position_updated, Toast.LENGTH_LONG).show();
     }
 }

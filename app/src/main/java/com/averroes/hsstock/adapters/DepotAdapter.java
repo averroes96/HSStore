@@ -2,23 +2,20 @@ package com.averroes.hsstock.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.averroes.hsstock.R;
-import com.averroes.hsstock.activities.UpdatePositionActivity;
+import com.averroes.hsstock.activities.UpdateDepotActivity;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Depot;
 
@@ -58,7 +55,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, UpdatePositionActivity.class);
+                Intent intent = new Intent(context, UpdateDepotActivity.class);
                 intent.putExtra("id", String.valueOf(depots.get(position).get_id()));
                 intent.putExtra("reference", String.valueOf(depots.get(position).get_reference()));
                 intent.putExtra("position", String.valueOf(depots.get(position).get_location()));

@@ -44,11 +44,6 @@ public class DepotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_depot);
 
-        String[] types = {
-                "REF",
-                "POS"
-        };
-
         backBtn = findViewById(R.id.backBtn);
         addLocationBtn = findViewById(R.id.addLocationBtn);
         searchET = findViewById(R.id.searchET);
@@ -198,7 +193,7 @@ public class DepotActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == 1 || requestCode == 2){
+        if(requestCode == 1 || requestCode == 2 || requestCode == 3){
             recreate();
         }
         super.onActivityResult(requestCode, resultCode, data);

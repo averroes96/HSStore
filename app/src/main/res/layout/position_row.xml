@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/mainLayout">
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -20,45 +20,31 @@
             >
 
             <TextView
-                android:id="@+id/referenceTV"
+                android:id="@+id/nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_reference_grey"
-                android:drawablePadding="5dp"
+                android:drawablePadding="8dp"
                 android:text="TextView"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.48" />
+                app:layout_constraintVertical_bias="0.48"
+                app:drawableStartCompat="@drawable/ic_location_grey" />
 
             <TextView
-                android:id="@+id/priceTV"
+                android:id="@+id/refsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:drawableStart="@drawable/ic_price_grey"
-                android:drawablePadding="5dp"
+                android:drawablePadding="8dp"
                 android:text="TextView"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/referenceTV"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/dateTV"
-                android:alpha="0.7"
-                android:drawablePadding="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:text="TextView"
-                android:textSize="16sp"
-                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/referenceTV"
-                app:drawableStartCompat="@drawable/ic_date_grey" />
+                app:layout_constraintStart_toEndOf="@+id/nameTV"
+                app:layout_constraintTop_toTopOf="parent"
+                app:drawableStartCompat="@drawable/ic_count_grey" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

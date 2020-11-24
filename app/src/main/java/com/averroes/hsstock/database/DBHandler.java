@@ -305,7 +305,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public long addPosition(Depot depot){
+    public long addDepot(Depot depot){
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_REF, depot.get_reference());
@@ -320,7 +320,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public boolean updatePosition(Depot depot) {
+    public boolean updateDepot(Depot depot) {
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_REF, depot.get_reference());
         values.put(COLUMN_LOCATION, depot.get_location());
@@ -334,6 +335,7 @@ public class DBHandler extends SQLiteOpenHelper {
             Toast.makeText(context, "Position updated", Toast.LENGTH_LONG).show();
 
         return  res != -1;
+
     }
 
     public void deleteDepot(Depot depot){
@@ -346,5 +348,39 @@ public class DBHandler extends SQLiteOpenHelper {
         else
             Toast.makeText(context, "Depot deleted", Toast.LENGTH_LONG).show();
 
+    }
+
+    public void removeDepot(Depot depot){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        long res = db.delete(T_DEPOT, "reference = ? AND location = ?", new String[]{depot.get_reference(), depot.get_location()});
+        if(res == -1)
+            Toast.makeText(context, "Erreur de base de données lors de suppression d'achat", Toast.LENGTH_LONG).show();
+
+    }
+
+    public Cursor getAllPositions() {
+        String query = "SELECT distinct location FROM " + T_DEPOT ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor getPositionRefs(String name) {
+        String query = "SELECT reference FROM " + T_DEPOT + " WHERE location = ?" ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, new String[]{name});
+        }
+
+        return cursor;
     }
 }
