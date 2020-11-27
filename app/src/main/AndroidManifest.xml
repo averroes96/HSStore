@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activities.UpdatePositionActivity"></activity>
+        <activity android:name=".activities.AddDepotActivity"></activity>
+        <activity android:name=".activities.UpdatePositionActivity" />
         <activity android:name=".activities.PositionsActivity" />
         <activity android:name=".activities.SplashActivity">
             <intent-filter>

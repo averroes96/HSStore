@@ -22,6 +22,10 @@
     <string name="delete_confirm_msg">"Etes-vous sûr que vous voulez supprimer "</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="add_depot">Ajouter depot</string>
+    <string name="enter_ref">Entrez le reference svp !</string>
+    <string name="invalid_ref">Reference no doit pas contenir des virgule !</string>
+    <string name="enter_position">Entrez la position svp !</string>
     <string-array name="filter_types">
         <item name="ref">REF</item>
         <item name="pos">POS</item>

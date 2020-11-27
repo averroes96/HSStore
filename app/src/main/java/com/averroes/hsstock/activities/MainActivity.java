@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         products = new ArrayList<>();
 
+        MediaPlayer player = new MediaPlayer();
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override

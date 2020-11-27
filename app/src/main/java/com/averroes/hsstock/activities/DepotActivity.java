@@ -77,7 +77,7 @@ public class DepotActivity extends AppCompatActivity {
         addLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(DepotActivity.this, AddPositionActivity.class),2);
+                startActivityForResult(new Intent(DepotActivity.this, AddDepotActivity.class),2);
             }
         });
 

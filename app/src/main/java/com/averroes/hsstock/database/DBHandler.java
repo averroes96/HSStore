@@ -16,7 +16,7 @@ import com.averroes.hsstock.models.Sell;
 public class DBHandler extends SQLiteOpenHelper {
 
     private Context context;
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 1;
     private static String DB_NAME = "Product.db";
     public static final String T_PRODUCT = "product";
     public static final String COLUMN_ID = "id";
@@ -49,16 +49,18 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        String query = "CREATE TABLE " + T_PRODUCT
+        String query = "CREATE TABLE IF NOT EXISTS " + T_PRODUCT
                 + " ( "
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_NAME + " TEXT, "
                 + COLUMN_SIZE + " INTEGER, "
-                + COLUMN_COLOR + " TEXT"
+                + COLUMN_COLOR + " TEXT,"
+                + COLUMN_IMAGE + " TEXT,"
+                + COLUMN_SOLD + " INTEGER DEFAULT 0"
                 + " );" ;
         sqLiteDatabase.execSQL(query);
 
-        query = "CREATE TABLE " + T_SELL
+        query = "CREATE TABLE IF NOT EXISTS " + T_SELL
                 + " ( "
                 + COLUMN_SELL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_DATE + " DATETIME, "
@@ -66,65 +68,20 @@ public class DBHandler extends SQLiteOpenHelper {
                 + COLUMN_PRODUCT_ID + " INTEGER, "
                 + "FOREIGN KEY(" + COLUMN_PRODUCT_ID + ") REFERENCES " + T_PRODUCT + "(" + COLUMN_ID + ")"
                 + " );" ;
+        sqLiteDatabase.execSQL(query);
 
+        query = "CREATE TABLE IF NOT EXISTS " + T_DEPOT
+                + " ( "
+                + COLUMN_DEPOT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_REF + " TEXT, "
+                + COLUMN_LOCATION + " INTEGER"
+                + " );" ;
         sqLiteDatabase.execSQL(query);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-        switch (i1){
-            case 1:
-                onCreate(sqLiteDatabase);
-            case 2:
-                sqLiteDatabase.execSQL("ALTER TABLE " + T_PRODUCT + " ADD COLUMN " + COLUMN_SOLD + " INTEGER DEFAULT 0");
-                break;
-            case 3:
-                sqLiteDatabase.execSQL("DROP TABLE " + T_SELL);
-                String query = "CREATE TABLE " + T_SELL
-                        + " ( "
-                        + COLUMN_SELL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
-                        + COLUMN_PRICE + " INTEGER, "
-                        + COLUMN_PRODUCT_ID + " INTEGER, "
-                        + "FOREIGN KEY(" + COLUMN_PRODUCT_ID + ") REFERENCES " + T_PRODUCT + "(" + COLUMN_ID + ")"
-                        + " );" ;
-
-                sqLiteDatabase.execSQL(query);
-                break;
-            case 4:
-                sqLiteDatabase.execSQL("ALTER TABLE " + T_PRODUCT + " ADD COLUMN " + COLUMN_IMAGE + " BLOB");
-                break;
-
-            case 5:
-                sqLiteDatabase.execSQL("DROP TABLE " + T_PRODUCT);
-                query = "CREATE TABLE " + T_PRODUCT
-                        + " ( "
-                        + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUMN_NAME + " TEXT, "
-                        + COLUMN_SIZE + " INTEGER, "
-                        + COLUMN_COLOR + " TEXT, "
-                        + COLUMN_IMAGE + " TEXT"
-                        + " );" ;
-                sqLiteDatabase.execSQL(query);
-                break;
-
-            case 6:
-                sqLiteDatabase.execSQL("ALTER TABLE " + T_PRODUCT + " ADD COLUMN " + COLUMN_SOLD + " INTEGER DEFAULT 0");
-                break;
-
-            case 7:
-                query = "CREATE TABLE " + T_DEPOT
-                        + " ( "
-                        + COLUMN_DEPOT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + COLUMN_REF + " TEXT, "
-                        + COLUMN_LOCATION + " INTEGER"
-                        + " );" ;
-                sqLiteDatabase.execSQL(query);
-                break;
-
-        }
 
     }
 
