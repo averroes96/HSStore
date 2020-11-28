@@ -76,7 +76,6 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 boolean res = updateProduct();
                 if(res)
                     finish();
@@ -124,6 +123,17 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
     }
 
     private void deleteProduct() {
+
+        referenceText = reference.getText().toString().trim();
+        colorText = color.getText().toString().trim();
+        sizeNumber = size.getText().toString().trim();
+
+        Product product = new Product(
+                referenceText,
+                colorText,
+                Integer.parseInt(sizeNumber)
+        );
+
         dbHandler.deleteProduct(getIntent().getStringExtra("id"));
     }
 

@@ -47,24 +47,24 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        selectedProduct = products.get(position);
-        holder.name.setText(String.valueOf(selectedProduct.get_name()));
-        holder.size.setText(String.valueOf(selectedProduct.get_size()));
-        holder.color.setText(String.valueOf(selectedProduct.get_color()));
-        if(!selectedProduct.get_image().equals(""))
-            holder.image.setImageURI(Uri.parse(selectedProduct.get_image()));
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        holder.name.setText(String.valueOf(products.get(position).get_name()));
+        holder.size.setText(String.valueOf(products.get(position).get_size()));
+        holder.color.setText(String.valueOf(products.get(position).get_color()));
+        if(!products.get(position).get_image().equals(""))
+            holder.image.setImageURI(Uri.parse(products.get(position).get_image()));
         else
             holder.image.setImageResource(R.drawable.ic_image_grey_48);
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, UpdateProductActivity.class);
-                intent.putExtra("id", String.valueOf(selectedProduct.get_id()));
-                intent.putExtra("ref", String.valueOf(selectedProduct.get_name()));
-                intent.putExtra("size", String.valueOf(selectedProduct.get_size()));
-                intent.putExtra("color", String.valueOf(selectedProduct.get_color()));
-                intent.putExtra("image", selectedProduct.get_image());
+                intent.putExtra("id", String.valueOf(products.get(position).get_id()));
+                intent.putExtra("ref", String.valueOf(products.get(position).get_name()));
+                intent.putExtra("size", String.valueOf(products.get(position).get_size()));
+                intent.putExtra("color", String.valueOf(products.get(position).get_color()));
+                intent.putExtra("image", products.get(position).get_image());
                 activity.startActivityForResult(intent, 1);
             }
         });

@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         products = new ArrayList<>();
 
-        MediaPlayer player = new MediaPlayer();
-
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

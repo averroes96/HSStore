@@ -22,6 +22,12 @@ public class Product {
         this._image = _image;
     }
 
+    public Product(String _name, String _color, int _size) {
+        this._name = _name;
+        this._color = _color;
+        this._size = _size;
+    }
+
     public int get_id() {
         return _id;
     }
