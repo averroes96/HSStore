@@ -1,10 +1,12 @@
 package com.averroes.hsstock.activities;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -29,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView nodata;
     private ImageView empty;
-    private TextView sum;
+    private TextView sum,typeTV;
     private ImageButton goToDepot;
+    private RecyclerView productList;
+
 
     private DBHandler dbHandler;
     private ArrayList<Product> products;
@@ -45,11 +49,19 @@ public class MainActivity extends AppCompatActivity {
         ImageButton addProduct = findViewById(R.id.addProductBtn);
         ImageButton sellsBtn = findViewById(R.id.goToSellsBtn);
         EditText search = findViewById(R.id.searchET);
-        RecyclerView productList = findViewById(R.id.productsRV);
+        productList = findViewById(R.id.productsRV);
         sum = findViewById(R.id.sumText);
         nodata = findViewById(R.id.nodata);
         empty = findViewById(R.id.empty);
         goToDepot = findViewById(R.id.goToDepot);
+        typeTV = findViewById(R.id.typeTV);
+
+        typeTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openTypeDialog();
+            }
+        });
 
 
         dbHandler = new DBHandler(this);
@@ -101,6 +113,52 @@ public class MainActivity extends AppCompatActivity {
         sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
     }
 
+
+    private void openTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.type_dialog_msg))
+                .setItems(R.array.types, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String[] array = getResources().getStringArray(R.array.types);
+                        typeTV.setText(array[i]);
+                        if(i == 0) {
+                            storeData();
+                            customAdapter = new CustomAdapter(MainActivity.this, MainActivity.this, products);
+                            productList.setAdapter(customAdapter);
+                            productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                            customAdapter.notifyDataSetChanged();
+                            sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
+                        }
+                        else
+                            filterByType(array[i]);
+                    }
+                })
+                .create().show();
+    }
+
+    private void filterByType(String s) {
+        ArrayList<Product> filteredList = new ArrayList<>();
+
+        for(Product str : products){
+            if(str.get_type().toLowerCase().trim().contains(s.toLowerCase())){
+                filteredList.add(str);
+            }
+        }
+
+        customAdapter.filteredList(filteredList);
+        sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
+
+        if(filteredList.size() == 0){
+            empty.setVisibility(View.VISIBLE);
+            nodata.setVisibility(View.VISIBLE);
+        }
+        else{
+            empty.setVisibility(View.GONE);
+            nodata.setVisibility(View.GONE);
+        }
+    }
+
     private void filter(String text) {
         ArrayList<Product> filteredList = new ArrayList<>();
 
@@ -122,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             nodata.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     protected void onResume() {
@@ -155,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
                     product.set_color(cursor.getString(3));
                     product.set_size(cursor.getInt(2));
                     product.set_image(cursor.getString(4));
+                    product.set_type(cursor.getString(5));
                     products.add(product);
                 }
 

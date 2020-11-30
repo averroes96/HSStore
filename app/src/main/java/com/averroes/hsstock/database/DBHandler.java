@@ -16,7 +16,7 @@ import com.averroes.hsstock.models.Sell;
 public class DBHandler extends SQLiteOpenHelper {
 
     private Context context;
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static String DB_NAME = "Product.db";
     public static final String T_PRODUCT = "product";
     public static final String COLUMN_ID = "id";
@@ -34,6 +34,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_DEPOT_ID = "id";
     public static final String COLUMN_REF = "reference";
     public static final String COLUMN_LOCATION = "location";
+    private static final String COLUMN_TYPE = "type";
 
 
     public DBHandler(@Nullable Context context) {
@@ -82,7 +83,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        switch (i1){
+            case 2: sqLiteDatabase.execSQL("ALTER TABLE " + T_PRODUCT + " ADD COLUMN " + COLUMN_TYPE + " TEXT DEFAULT ''");
+                break;
+        }
     }
 
     public void addProduct(Product product){
@@ -92,6 +96,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_SIZE, product.get_size());
         values.put(COLUMN_COLOR, product.get_color());
         values.put(COLUMN_IMAGE, product.get_image());
+        values.put(COLUMN_TYPE, product.get_type());
         SQLiteDatabase db = this.getWritableDatabase();
         long res = db.insert(T_PRODUCT, null, values);
 
@@ -179,7 +184,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Cursor readAllData(){
 
-        String query = "SELECT id,name,size,color,image FROM " + T_PRODUCT + " WHERE " + COLUMN_SOLD + " = ? ORDER BY " + COLUMN_NAME ;
+        String query = "SELECT id,name,size,color,image,type FROM " + T_PRODUCT + " WHERE " + COLUMN_SOLD + " = ? ORDER BY " + COLUMN_NAME ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -199,6 +204,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_COLOR, product.get_color());
         values.put(COLUMN_SOLD, product.get_sold());
         values.put(COLUMN_IMAGE, product.get_image());
+        values.put(COLUMN_TYPE, product.get_type());
         SQLiteDatabase db = this.getWritableDatabase();
         long res = db.update(T_PRODUCT, values, "id = ?", new String[]{String.valueOf(product.get_id())});
 

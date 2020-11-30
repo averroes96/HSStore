@@ -26,8 +26,21 @@
     <string name="enter_ref">Entrez le reference svp !</string>
     <string name="invalid_ref">Reference no doit pas contenir des virgule !</string>
     <string name="enter_position">Entrez la position svp !</string>
+    <string name="stock">Stock</string>
+    <string name="type">Type</string>
+    <string name="type_dialog_msg">Selectionner le type:</string>
     <string-array name="filter_types">
         <item name="ref">REF</item>
         <item name="pos">POS</item>
     </string-array>
+    <string-array name="types">
+        <item name="all">Tout</item>
+        <item name="boot">Boot</item>
+        <item name="soiree">Soirée</item>
+        <item name="moc">Moccasin</item>
+        <item name="bal">Ballerine</item>
+        <item name="class">Classique</item>
+        <item name="sabot">Sabot</item>
+    </string-array>
+
 </resources>

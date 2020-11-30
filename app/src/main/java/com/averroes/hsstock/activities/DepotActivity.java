@@ -37,7 +37,6 @@ public class DepotActivity extends AppCompatActivity {
     private ArrayList<Depot> depots;
     private DBHandler dbHandler;
     private DepotAdapter adapter;
-    private String currentSearchType = "ref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

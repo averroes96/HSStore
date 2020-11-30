@@ -8,10 +8,14 @@ public class Product {
     private int _size;
     private int _sold;
     private String _image;
+    private String _type;
 
     public Product() {
         this._sold = 0;
         this._image = "";
+        this._name = "";
+        this._color = "";
+        this._size = 0;
     }
 
     public Product(String _name, String _color, int _size, String _image) {
@@ -26,6 +30,23 @@ public class Product {
         this._name = _name;
         this._color = _color;
         this._size = _size;
+    }
+
+    public Product(int _id, String _name, String _color, int _size, String _image, String _type) {
+        this._id = _id;
+        this._name = _name;
+        this._color = _color;
+        this._size = _size;
+        this._image = _image;
+        this._type = _type;
+    }
+
+    public String get_type() {
+        return _type;
+    }
+
+    public void set_type(String _type) {
+        this._type = _type;
     }
 
     public int get_id() {

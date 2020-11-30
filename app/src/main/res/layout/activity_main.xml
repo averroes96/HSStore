@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Stock"
+                android:text="@string/stock"
                 android:textColor="@color/colorWhite"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -73,22 +73,46 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/searchET"
-            android:layout_width="300dp"
+        <LinearLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/shape_rectangle"
-            android:drawableStart="@drawable/ic_search_grey"
-            android:ems="10"
-            android:hint="@string/search"
-            android:inputType="textPersonName"
-            android:padding="15dp"
+            android:layout_marginTop="32sp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
+            <EditText
+                android:id="@+id/searchET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/shape_rectangle"
+                android:drawableStart="@drawable/ic_search_grey"
+                android:ems="10"
+                android:hint="@string/search"
+                android:inputType="textPersonName"
+                android:padding="12sp" />
+
+            <TextView
+                android:id="@+id/typeTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rectangle"
+                android:ems="10"
+                android:maxLines="1"
+                android:padding="12sp"
+                android:text="@string/type"
+                android:textAlignment="center"
+                app:drawableEndCompat="@drawable/ic_arrow_down_grey" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productsRV"
@@ -111,7 +135,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchET"
+            app:layout_constraintTop_toBottomOf="@+id/searchLayout"
             app:srcCompat="@drawable/ic_empty_grey" />
 
         <TextView
@@ -136,7 +160,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchET" />
+            app:layout_constraintTop_toBottomOf="@+id/searchLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
