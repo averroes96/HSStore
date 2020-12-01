@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.content.ContentValues;
@@ -25,8 +26,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.averroes.hsstock.adapters.CustomAdapter;
 import com.averroes.hsstock.interfaces.CameraMethods;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Product;
@@ -44,11 +47,12 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
 
     private ImageButton back;
     private CircularImageView image;
-    private EditText reference, size, color;
+    private EditText reference, colorsAndSizesET;
+    private TextView typeTV;
     private Button add;
 
-    private String referenceText,colorText;
-    private List<String> sizes;
+    private String referenceText,colorText,sizesText;
+    private List<String> colorsAndSizes,sizes;
 
     private Uri imageUri;
 
@@ -65,10 +69,10 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
 
         back = findViewById(R.id.backBtn);
         reference = findViewById(R.id.referencesET);
-        size = findViewById(R.id.sizeET);
-        color = findViewById(R.id.colorET);
+        colorsAndSizesET = findViewById(R.id.colorsAndSizesET);
         add = findViewById(R.id.addBtn);
         image = findViewById(R.id.productImageTV);
+        typeTV = findViewById(R.id.typeTV);
 
         cameraPerm = new String[]{
                 Manifest.permission.CAMERA,
@@ -77,6 +81,7 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
         storagePerm = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         dbHandler = new DBHandler(this);
+        colorsAndSizes = new ArrayList<>();
         sizes = new ArrayList<>();
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +103,13 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
             @Override
             public void onClick(View view) {
                 showImagePickDialog();
+            }
+        });
+
+        typeTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openTypeDialog();
             }
         });
 
@@ -187,50 +199,82 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
         return rotatedImg;
     }
 
-
+    private void openTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.type_dialog_msg))
+                .setItems(R.array.types, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String[] array = getResources().getStringArray(R.array.types);
+                        typeTV.setText(array[i]);
+                    }
+                })
+                .create().show();
+    }
 
     private void addProduct() {
 
         referenceText = reference.getText().toString().trim();
-        colorText = color.getText().toString().trim();
-        //sizeNumber = size.getText().toString().trim();
-        sizes = Arrays.asList(size.getText().toString().trim().split(","));
+        colorsAndSizes = Arrays.asList(colorsAndSizesET.getText().toString().trim().split("\n"));
 
-        if(sizes.size() == 0){
-                Toast.makeText(this, "Empty input", Toast.LENGTH_LONG).show();
+        if(colorsAndSizes.size() == 0){
+                Toast.makeText(this, getString(R.string.enter_colors_sizes), Toast.LENGTH_LONG).show();
                 return;
         }
 
-        for (String str : sizes) {
-            if (!TextUtils.isDigitsOnly(str)) {
-                try {
-                    Integer.parseInt(str);
-                } catch (NumberFormatException e) {
-                    Toast.makeText(this, "Entrez des pointures valides separée par une virgule (si plusieurs) svp", Toast.LENGTH_LONG).show();
+        for (String str : colorsAndSizes) {
+
+            // Init variables
+            colorText = "";
+            sizesText = "";
+
+            try {
+                colorText = str.split(":")[0];
+                colorText = colorText.trim();
+                sizesText = str.split(":")[1];
+                sizesText = sizesText.trim();
+                sizes = Arrays.asList(sizesText.split(","));
+            } catch (ArrayIndexOutOfBoundsException e){
+                Toast.makeText(this, getString(R.string.syntax_error), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(TextUtils.isEmpty(referenceText)){
+                Toast.makeText(this, "Entrez la référence du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+                return;
+            }
+            // Check sizes and colors input
+            if(colorText.isEmpty()){
+                Toast.makeText(this, getString(R.string.syntax_error), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(sizesText.isEmpty()){
+                Toast.makeText(this, getString(R.string.syntax_error), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(sizes.isEmpty()){
+                Toast.makeText(this, getString(R.string.enter_sizes), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            for(String size : sizes){
+                if(!TextUtils.isDigitsOnly(size)){
+                    Toast.makeText(this, getString(R.string.invalid_size), Toast.LENGTH_LONG).show();
                     return;
                 }
             }
+
+            for(String size : sizes) {
+                    dbHandler.addProduct(
+                            new Product(
+                                    referenceText,
+                                    colorText,
+                                    Integer.parseInt(size),
+                                    imageUri == null ? "" : imageUri.toString()
+                            ));
+            }
+
         }
 
-        
-        if(TextUtils.isEmpty(referenceText)){
-            Toast.makeText(this, "Entrez la référence du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if(TextUtils.isEmpty(colorText)){
-            Toast.makeText(this, "Entrez le couleur du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        for(String size : sizes) {
-            dbHandler.addProduct(
-                    new Product(
-                            referenceText,
-                            colorText,
-                            Integer.parseInt(size),
-                            imageUri == null ? "": imageUri.toString()
-                    ));
-        }
     }
 
     @Override

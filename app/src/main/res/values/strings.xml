@@ -29,6 +29,12 @@
     <string name="stock">Stock</string>
     <string name="type">Type</string>
     <string name="type_dialog_msg">Selectionner le type:</string>
+    <string name="colors_and_sizes">Colors and sizes</string>
+    <string name="enter_colors_sizes">Specifier les couleurs et les pointures svp</string>
+    <string name="enter_sizes">Specifier les pointures de chaque couleur svp</string>
+    <string name="syntax_error">Verifier que la syntaxe est correcte lors de la specification des couleurs et pointures</string>
+    <string name="invalid_size">Specifier des pointures valides svp</string>
+    <string name="shoe_s">Chaussure(s)</string>
     <string-array name="filter_types">
         <item name="ref">REF</item>
         <item name="pos">POS</item>

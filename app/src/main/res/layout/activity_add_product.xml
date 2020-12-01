@@ -73,45 +73,44 @@
             android:ems="10"
             android:hint="@string/reference"
             android:inputType="textPersonName"
-            android:padding="15dp"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/productImageTV" />
 
         <EditText
-            android:id="@+id/sizeET"
+            android:id="@+id/colorsAndSizesET"
             android:drawablePadding="5dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/shape_rectangle"
             android:drawableStart="@drawable/ic_size_grey"
             android:ems="10"
-            android:hint="@string/size"
-            android:inputType="text"
-            android:padding="15dp"
+            android:hint="@string/colors_and_sizes"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/referencesET" />
 
-        <EditText
-            android:id="@+id/colorET"
+        <TextView
+            android:id="@+id/typeTV"
             android:layout_width="300dp"
-            android:drawablePadding="5dp"
+            android:drawablePadding="4dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/shape_rectangle"
-            android:drawableStart="@drawable/ic_color_grey"
             android:ems="10"
-            android:hint="@string/color"
-            android:inputType="textPersonName"
-            android:padding="15dp"
+            android:hint="@string/type"
+            android:textSize="18sp"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sizeET" />
+            app:layout_constraintTop_toBottomOf="@+id/colorsAndSizesET"
+            app:drawableStartCompat="@drawable/ic_type_grey"
+            app:drawableEndCompat="@drawable/ic_arrow_down_grey" />
+
 
         <Button
             android:id="@+id/addBtn"
@@ -126,7 +125,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/colorET" />
+            app:layout_constraintTop_toBottomOf="@+id/typeTV" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

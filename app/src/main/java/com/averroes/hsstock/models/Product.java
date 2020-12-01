@@ -16,6 +16,7 @@ public class Product {
         this._name = "";
         this._color = "";
         this._size = 0;
+        this._type = "";
     }
 
     public Product(String _name, String _color, int _size, String _image) {
@@ -32,8 +33,7 @@ public class Product {
         this._size = _size;
     }
 
-    public Product(int _id, String _name, String _color, int _size, String _image, String _type) {
-        this._id = _id;
+    public Product(String _name, String _color, int _size, String _image, String _type) {
         this._name = _name;
         this._color = _color;
         this._size = _size;

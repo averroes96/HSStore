@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     filter(s.toString());
             }
         });
-
+        
         storeData();
 
         customAdapter = new CustomAdapter(MainActivity.this, this, products);
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             productList.setAdapter(customAdapter);
                             productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                             customAdapter.notifyDataSetChanged();
-                            sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
+                            sum.setText(customAdapter.getItemCount() + " " + getString(R.string.shoe_s));
                         }
                         else
                             filterByType(array[i]);
@@ -141,8 +141,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Product> filteredList = new ArrayList<>();
 
         for(Product str : products){
-            if(str.get_type().toLowerCase().trim().contains(s.toLowerCase())){
-                filteredList.add(str);
+            if(!str.get_type().equals("")) {
+                if (str.get_type().toLowerCase().trim().equals(s.toLowerCase())) {
+                    filteredList.add(str);
+                }
             }
         }
 

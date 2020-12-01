@@ -335,6 +335,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public void ignoreThis() {
+        String query = "DELETE FROM product WHERE name = 'HS-28' " ;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.execSQL(query);
+    }
+
     public Cursor getPositionRefs(String name) {
         String query = "SELECT reference FROM " + T_DEPOT + " WHERE location = ?" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
