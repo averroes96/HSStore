@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 openTypeDialog();
             }
         });
-
+        typeTV.setText(getResources().getStringArray(R.array.types)[0]);
 
         dbHandler = new DBHandler(this);
         products = new ArrayList<>();
@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                     filter(s.toString());
             }
         });
+
+        //dbHandler.ignoreThis();
         
         storeData();
 
@@ -166,7 +168,13 @@ public class MainActivity extends AppCompatActivity {
 
         for(Product str : products){
             if(str.get_name().toLowerCase().trim().contains(text.toLowerCase())){
-                filteredList.add(str);
+                if(!typeTV.getText().toString().equals(getResources().getStringArray(R.array.types)[0])) {
+                    if (str.get_type().equals(typeTV.getText().toString()))
+                        filteredList.add(str);
+                }
+                else{
+                    filteredList.add(str);
+                }
             }
         }
 

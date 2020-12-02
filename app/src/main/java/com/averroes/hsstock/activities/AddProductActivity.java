@@ -94,7 +94,6 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 addProduct();
             }
         });
@@ -113,6 +112,11 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
             }
         });
 
+    }
+
+    private void reset() {
+        reference.setText("");
+        colorsAndSizesET.setText("");
     }
 
     public static Bitmap handleSamplingAndRotationBitmap(Context context, Uri selectedImage)
@@ -269,9 +273,12 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
                                     referenceText,
                                     colorText,
                                     Integer.parseInt(size),
-                                    imageUri == null ? "" : imageUri.toString()
+                                    imageUri == null ? "" : imageUri.toString(),
+                                    typeTV.getText().toString()
                             ));
             }
+
+            reset();
 
         }
 

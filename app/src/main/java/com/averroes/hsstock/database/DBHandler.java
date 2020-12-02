@@ -336,7 +336,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void ignoreThis() {
-        String query = "DELETE FROM product WHERE name = 'HS-28' " ;
+        String query = "UPDATE product SET type = 'Boot' " ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);

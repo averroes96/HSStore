@@ -64,6 +64,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 intent.putExtra("ref", String.valueOf(products.get(position).get_name()));
                 intent.putExtra("size", String.valueOf(products.get(position).get_size()));
                 intent.putExtra("color", String.valueOf(products.get(position).get_color()));
+                intent.putExtra("type", products.get(position).get_type());
                 intent.putExtra("image", products.get(position).get_image());
                 activity.startActivityForResult(intent, 1);
             }

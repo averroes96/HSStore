@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.averroes.hsstock.interfaces.CameraMethods;
@@ -34,6 +35,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
     private ImageButton back,delete;
     private ImageView image;
     private EditText reference, size, color;
+    private TextView typeTV;
     private Button update;
 
     private Uri imageUri;
@@ -57,13 +59,13 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
         update = findViewById(R.id.updateBtn);
         delete = findViewById(R.id.deleteBtn);
         image = findViewById(R.id.productImageIV);
+        typeTV = findViewById(R.id.typeTV);
 
         cameraPerm = new String[]{
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
         storagePerm = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         dbHandler = new DBHandler(this);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +98,27 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
             }
         });
 
+        typeTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openTypeDialog();
+            }
+        });
 
         getIntentData();
+    }
+
+    private void openTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.type_dialog_msg))
+                .setItems(R.array.types, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String[] array = getResources().getStringArray(R.array.types);
+                        typeTV.setText(array[i]);
+                    }
+                })
+                .create().show();
     }
 
     private void confirmDialog() {
@@ -123,17 +144,6 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
     }
 
     private void deleteProduct() {
-
-        referenceText = reference.getText().toString().trim();
-        colorText = color.getText().toString().trim();
-        sizeNumber = size.getText().toString().trim();
-
-        Product product = new Product(
-                referenceText,
-                colorText,
-                Integer.parseInt(sizeNumber)
-        );
-
         dbHandler.deleteProduct(getIntent().getStringExtra("id"));
     }
 
@@ -144,6 +154,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
             reference.setText(getIntent().getStringExtra("ref"));
             size.setText(getIntent().getStringExtra("size"));
             color.setText(getIntent().getStringExtra("color"));
+            typeTV.setText(getIntent().getStringExtra("type"));
             if(!getIntent().getStringExtra("image").equals("")) {
                 imageUri = Uri.parse(getIntent().getStringExtra("image"));
                 image.setImageURI(imageUri);
@@ -182,7 +193,8 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
                 referenceText,
                 colorText,
                 Integer.parseInt(sizeNumber),
-                imageUri.toString()
+                imageUri.toString(),
+                typeTV.getText().toString()
         );
         product.set_id(Integer.parseInt(getIntent().getStringExtra("id")));
         dbHandler.updateProduct(product);
