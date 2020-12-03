@@ -90,14 +90,12 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
                 confirmDialog();
             }
         });
-
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showImagePickDialog();
             }
         });
-
         typeTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +114,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String[] array = getResources().getStringArray(R.array.types);
                         typeTV.setText(array[i]);
+                        typeTV.setTextColor(getResources().getColor(R.color.colorBlack));
                     }
                 })
                 .create().show();
@@ -193,7 +192,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
                 referenceText,
                 colorText,
                 Integer.parseInt(sizeNumber),
-                imageUri.toString(),
+                imageUri == null? "" : imageUri.toString(),
                 typeTV.getText().toString()
         );
         product.set_id(Integer.parseInt(getIntent().getStringExtra("id")));

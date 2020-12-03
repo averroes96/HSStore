@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView nodata;
     private ImageView empty;
     private TextView sum,typeTV;
-    private ImageButton goToDepot;
+    private ImageButton goToDepot,refsIB;
     private RecyclerView productList;
 
 
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty);
         goToDepot = findViewById(R.id.goToDepot);
         typeTV = findViewById(R.id.typeTV);
+        refsIB = findViewById(R.id.refsIB);
 
         typeTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +68,17 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         products = new ArrayList<>();
 
+        refsIB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, RefsActivity.class), 3);
+            }
+        });
+
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, AddProductActivity.class),2);
+                startActivityForResult(new Intent(MainActivity.this, AddProductActivity.class),1);
             }
         });
 
@@ -84,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         goToDepot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, DepotActivity.class), 3);
+                startActivity(new Intent(MainActivity.this, DepotActivity.class));
             }
         });
 
@@ -236,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == 1 || requestCode == 2){
+        if(requestCode == 1 || requestCode == 2 || resultCode == 3){
             recreate();
         }
         super.onActivityResult(requestCode, resultCode, data);

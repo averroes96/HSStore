@@ -37,24 +37,22 @@
                 android:id="@+id/addProductBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_add_white"
                 tools:ignore="VectorDrawableCompat" />
 
 
-
             <ImageButton
                 android:id="@+id/goToSellsBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="8dp"
                 android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/goToDepot"
-                app:layout_constraintHorizontal_bias="0.008"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_local_grocery_store_24"
                 tools:ignore="VectorDrawableCompat" />
@@ -63,13 +61,21 @@
                 android:id="@+id/goToDepot"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="8dp"
                 android:background="@null"
-                app:layout_constraintEnd_toStartOf="@+id/addProductBtn"
-                app:layout_constraintHorizontal_bias="0.008"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/refsIB"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_store_24"
-                tools:ignore="VectorDrawableCompat" />
+                app:srcCompat="@drawable/ic_baseline_store_24"/>
+
+            <ImageButton
+                android:id="@+id/refsIB"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/addProductBtn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_positions_white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -156,7 +162,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="monospace"
             android:text="TextView"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
