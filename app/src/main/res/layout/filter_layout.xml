@@ -14,8 +14,8 @@
             android:id="@+id/upperBarLayout"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:padding="8dp"
             android:background="@drawable/shape_menu"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -25,11 +25,11 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:background="@null"
-                app:srcCompat="@drawable/ic_arrow_down_white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_down_white" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                 android:maxLines="1"
                 android:textSize="18sp"
                 android:padding="12sp"
-                android:text="@string/type"
+                android:hint="@string/type"
                 app:drawableEndCompat="@drawable/ic_arrow_down_grey"
                 android:drawablePadding="8sp"
                 app:drawableStartCompat="@drawable/ic_type_grey" />
@@ -82,13 +82,13 @@
                 android:maxLines="1"
                 android:textSize="18sp"
                 android:padding="12sp"
-                android:text="@string/size"
+                android:hint="@string/size"
                 app:drawableEndCompat="@drawable/ic_arrow_down_grey"
                 android:drawablePadding="8sp"
                 app:drawableStartCompat="@drawable/ic_size_grey" />
 
-            <EditText
-                android:id="@+id/colorET"
+            <TextView
+                android:id="@+id/colorTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -97,9 +97,10 @@
                 android:ems="10"
                 android:hint="@string/color"
                 android:padding="12sp"
-                android:drawableStart="@drawable/ic_color_grey"
+                android:textSize="18sp"
                 android:drawablePadding="8sp"
-                android:inputType="text" />
+                app:drawableStartCompat="@drawable/ic_color_grey"
+                app:drawableEndCompat="@drawable/ic_arrow_down_grey"/>
 
             <Button
                 android:id="@+id/filterBtn"

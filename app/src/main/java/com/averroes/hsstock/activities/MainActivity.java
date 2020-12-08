@@ -144,14 +144,13 @@ public class MainActivity extends AppCompatActivity {
         dialog.setContentView(view);
 
         ImageButton backBtn;
-        final TextView typeTV,sizeTV;
-        EditText colorET;
+        final TextView typeTV,sizeTV,colorTV;
         Button filterBtn;
 
         backBtn = view.findViewById(R.id.backBtn);
         typeTV = view.findViewById(R.id.typeTV);
         sizeTV = view.findViewById(R.id.sizeTV);
-        colorET = view.findViewById(R.id.colorET);
+        colorTV = view.findViewById(R.id.colorTV);
         filterBtn = view.findViewById(R.id.filterBtn);
 
         dialog.show();
@@ -197,17 +196,107 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        colorTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                colorFiltering();
+            }
+
+            private void colorFiltering() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle(getString(R.string.color_dialog))
+                        .setItems(dbHandler.getColors(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String[] array = dbHandler.getColors();
+                                colorTV.setText(array[i]);
+                            }
+                        })
+                        .create().show();
+
+            }
+        });
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                dialog.dismiss();
             }
         });
 
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                advancedFiltering();
+            }
 
+            private void advancedFiltering() {
+                String query = "";
+                String typeText = typeTV.getText().toString();
+                String textColor = colorTV.getText().toString();
+                if(!typeText.equals("") && !typeText.equals(getResources().getStringArray(R.array.types)[0]))
+                    query = " WHERE type = '" + typeText + "' ";
+
+                if(!textColor.equals("")){
+                    if(query.equals(""))
+                        query = " WHERE color = '" + textColor +  "' ";
+                    else
+                        query += "AND color = '" + textColor + "' ";
+                }
+                if(!sizeTV.getText().toString().isEmpty()){
+                    if(query.equals(""))
+                        query = " WHERE size = " + Integer.parseInt(sizeTV.getText().toString()) +  " ";
+                    else
+                        query += "AND size = " + Integer.parseInt(sizeTV.getText().toString()) + " ";
+                }
+
+                if(query.equals(""))
+                    query = " WHERE sold = ?";
+                else
+                    query += "AND sold = ?";
+
+                getResults(query);
+                customAdapter = new CustomAdapter(MainActivity.this, MainActivity.this, products);
+                productList.setAdapter(customAdapter);
+                productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                customAdapter.notifyDataSetChanged();
+                sum.setText(customAdapter.getItemCount() + " " + getString(R.string.shoe_s));
+                dialog.dismiss();
+            }
+
+            private void getResults(String query) {
+
+                Cursor cursor = dbHandler.getResults(query);
+
+                if(cursor != null){
+
+                    if(cursor.getCount() == 0){
+                        products.clear();
+                        empty.setVisibility(View.VISIBLE);
+                        nodata.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        empty.setVisibility(View.GONE);
+                        nodata.setVisibility(View.GONE);
+
+                        products.clear();
+
+                        while(cursor.moveToNext()){
+                            Product product = new Product();
+                            product.set_id(cursor.getInt(0));
+                            product.set_name(cursor.getString(1));
+                            product.set_color(cursor.getString(3));
+                            product.set_size(cursor.getInt(2));
+                            product.set_image(cursor.getString(4));
+                            product.set_type(cursor.getString(5));
+                            products.add(product);
+                        }
+
+                    }
+
+                }
+                else
+                    Toast.makeText(view.getContext(), getString(R.string.db_error), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -228,7 +317,8 @@ public class MainActivity extends AppCompatActivity {
                             productList.setAdapter(customAdapter);
                             productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                             customAdapter.notifyDataSetChanged();
-                            sum.setText(customAdapter.getItemCount() + " " + getString(R.string.shoe_s));
+                            String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
+                            sum.setText(sumText);
                         }
                         else
                             filterByType(array[i]);
@@ -249,7 +339,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         customAdapter.filteredList(filteredList);
-        sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
+        String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
+        sum.setText(sumText);
 
         if(filteredList.size() == 0){
             empty.setVisibility(View.VISIBLE);

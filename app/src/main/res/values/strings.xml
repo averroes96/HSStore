@@ -84,5 +84,7 @@
     <string name="filtering">Filtrage</string>
     <string name="filter">Filtre</string>
     <string name="size_dialog_msg">Pointure :</string>
+    <string name="db_error">Erreur de base de données</string>
+    <string name="color_dialog">Couleur :</string>
 
 </resources>

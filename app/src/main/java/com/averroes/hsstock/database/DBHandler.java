@@ -353,4 +353,36 @@ public class DBHandler extends SQLiteOpenHelper {
 
         return cursor;
     }
+
+    public Cursor getResults(String query) {
+        String requette = "SELECT id,name,size,color,image,type FROM " + T_PRODUCT + query + " ORDER BY " + COLUMN_NAME ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(requette, new String[]{"0"});
+        }
+
+        return cursor;
+    }
+
+    public String[] getColors() {
+
+        String colors = "";
+        String query = "SELECT DISTINCT color FROM " + T_PRODUCT + " WHERE sold = ?" ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, new String[]{"0"});
+        }
+
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                colors += cursor.getString(0) + ",";
+            }
+        }
+
+        return colors.split(",");
+    }
 }
