@@ -43,10 +43,14 @@
         <item name="all">Tout</item>
         <item name="boot">Boot</item>
         <item name="soiree">Soirée</item>
+        <item name="sabo_soiree">Sabo-Soirée</item>
+        <item name="sandal_soiree">Sandal-Soirée</item>
         <item name="moc">Moccasin</item>
         <item name="bal">Ballerine</item>
         <item name="class">Classique</item>
-        <item name="sabot">Sabot</item>
+        <item name="sabot">Sabo</item>
+        <item name="bottine">Booting</item>
+        <item name="sandal">Sandal</item>
     </string-array>
     <string-array name="sizes">
         <item>15</item>
@@ -86,5 +90,7 @@
     <string name="size_dialog_msg">Pointure :</string>
     <string name="db_error">Erreur de base de données</string>
     <string name="color_dialog">Couleur :</string>
+    <string name="product_s_added">Products were successfully added.</string>
+    <string name="close">Close</string>
 
 </resources>

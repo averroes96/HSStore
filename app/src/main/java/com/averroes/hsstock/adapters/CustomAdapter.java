@@ -27,7 +27,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     private Context context;
     private Activity activity;
     ArrayList<Product> products;
-    private Product selectedProduct;
 
     private Animation animation;
 
@@ -51,8 +50,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.name.setText(String.valueOf(products.get(position).get_name()));
         holder.size.setText(String.valueOf(products.get(position).get_size()));
         holder.color.setText(String.valueOf(products.get(position).get_color()));
-        if(!products.get(position).get_image().equals(""))
+        if(!products.get(position).get_image().equals("")) {
             holder.image.setImageURI(Uri.parse(products.get(position).get_image()));
+        }
         else
             holder.image.setImageResource(R.drawable.ic_image_grey_48);
 

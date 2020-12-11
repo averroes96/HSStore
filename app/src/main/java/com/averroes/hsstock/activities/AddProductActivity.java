@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,12 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.averroes.hsstock.adapters.CustomAdapter;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.interfaces.CameraMethods;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.interfaces.StorageMethods;
 import com.blogspot.atifsoftwares.circularimageview.CircularImageView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,9 +46,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AddProductActivity extends AppCompatActivity implements CameraMethods, StorageMethods {
+public class AddProductActivity extends Commons implements CameraMethods, StorageMethods {
 
     private ImageButton back;
+    private ConstraintLayout mainLayout;
     private CircularImageView image;
     private EditText reference, colorsAndSizesET;
     private TextView typeTV;
@@ -73,6 +77,7 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
         add = findViewById(R.id.addBtn);
         image = findViewById(R.id.productImageTV);
         typeTV = findViewById(R.id.typeTV);
+        mainLayout = findViewById(R.id.mainLayout);
 
         cameraPerm = new String[]{
                 Manifest.permission.CAMERA,
@@ -117,6 +122,7 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
     private void reset() {
         reference.setText("");
         colorsAndSizesET.setText("");
+        image.setImageResource(R.drawable.ic_image_grey_48);
     }
 
     public static Bitmap handleSamplingAndRotationBitmap(Context context, Uri selectedImage)
@@ -239,39 +245,39 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
                 sizesText = sizesText.trim();
                 sizes = Arrays.asList(sizesText.split(","));
             } catch (ArrayIndexOutOfBoundsException e){
-                Toast.makeText(this, getString(R.string.syntax_error), Toast.LENGTH_LONG).show();
+                showSnackBarMessage(mainLayout, R.string.syntax_error);
                 return;
             }
             if(TextUtils.isEmpty(referenceText)){
-                Toast.makeText(this, "Entrez la référence du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+                showSnackBarMessage(mainLayout, R.string.enter_ref);
                 return;
             }
             // Check sizes and colors input
             if(colorText.isEmpty()){
-                Toast.makeText(this, getString(R.string.syntax_error), Toast.LENGTH_LONG).show();
+                showSnackBarMessage(mainLayout, R.string.syntax_error);
                 return;
             }
             if(sizesText.isEmpty()){
-                Toast.makeText(this, getString(R.string.syntax_error), Toast.LENGTH_LONG).show();
+                showSnackBarMessage(mainLayout, R.string.syntax_error);
                 return;
             }
             if(sizes.isEmpty()){
-                Toast.makeText(this, getString(R.string.enter_sizes), Toast.LENGTH_LONG).show();
+                showSnackBarMessage(mainLayout, R.string.enter_sizes);
                 return;
             }
 
             for(String size : sizes){
-                if(!TextUtils.isDigitsOnly(size)){
-                    Toast.makeText(this, getString(R.string.invalid_size), Toast.LENGTH_LONG).show();
-                    return;
-                }
+                showSnackBarMessage(mainLayout, R.string.invalid_size);
+                return;
             }
+
+        }
 
             for(String size : sizes) {
                     dbHandler.addProduct(
                             new Product(
                                     referenceText,
-                                    colorText,
+                                    colorText.toUpperCase(),
                                     Integer.parseInt(size),
                                     imageUri == null ? "" : imageUri.toString(),
                                     typeTV.getText().toString()
@@ -280,9 +286,10 @@ public class AddProductActivity extends AppCompatActivity implements CameraMetho
 
             reset();
 
-        }
+            showSnackBarMessage(mainLayout, R.string.product_s_added);
 
     }
+
 
     @Override
     public void pickFromGallery() {

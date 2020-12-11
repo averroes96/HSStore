@@ -104,8 +104,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if(res == -1)
             Toast.makeText(context, "Erreur de base de données lors de l\'ajout du produit", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(context, "Product added", Toast.LENGTH_LONG).show();
 
     }
 
@@ -335,8 +333,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void ignoreThis() {
-        String query = "UPDATE product SET type = 'Boot' " ;
+    public void ignoreThis(String ref) {
+        String query = "UPDATE product SET type = 'Sabo-Soirée' WHERE name = 'HS-" + ref + "' " ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);

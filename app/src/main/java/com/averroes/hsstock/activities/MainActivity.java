@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.averroes.hsstock.adapters.CustomAdapter;
 import com.averroes.hsstock.database.DBHandler;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -31,11 +34,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Commons {
 
     private TextView nodata;
     private ImageView empty;
-    private TextView sum,typeTV;
+    private TextView sum;
     private ImageButton goToDepot,refsIB;
     private RecyclerView productList;
     private FloatingActionButton filterFAB;
@@ -59,17 +62,8 @@ public class MainActivity extends AppCompatActivity {
         nodata = findViewById(R.id.nodata);
         empty = findViewById(R.id.empty);
         goToDepot = findViewById(R.id.goToDepot);
-        typeTV = findViewById(R.id.typeTV);
         refsIB = findViewById(R.id.refsIB);
         filterFAB = findViewById(R.id.filterFAB);
-
-        typeTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openTypeDialog();
-            }
-        });
-        typeTV.setText(getResources().getStringArray(R.array.types)[0]);
 
         dbHandler = new DBHandler(this);
         products = new ArrayList<>();
@@ -77,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         refsIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, RefsActivity.class), 3);
+
             }
         });
 
@@ -124,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //dbHandler.ignoreThis();
+        //for(int i=1; i < 36; i++)
+        //    dbHandler.ignoreThis(String.valueOf(i));
         
         storeData();
 
@@ -153,6 +148,18 @@ public class MainActivity extends AppCompatActivity {
         colorTV = view.findViewById(R.id.colorTV);
         filterBtn = view.findViewById(R.id.filterBtn);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("filter_settings", Context.MODE_PRIVATE);
+
+        if(sharedPreferences.contains("type_filter")) {
+            typeTV.setText(sharedPreferences.getString("type_filter", ""));
+        }
+        if(sharedPreferences.contains("color_filter")) {
+            colorTV.setText(sharedPreferences.getString("color_filter", ""));
+        }
+        if(sharedPreferences.contains("size_filter")) {
+            sizeTV.setText(sharedPreferences.getString("size_filter", ""));
+        }
+
         dialog.show();
 
         typeTV.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String[] array = getResources().getStringArray(R.array.types);
                                 typeTV.setText(array[i]);
+                                putPreferences("filter_settings", "type_filter", typeTV.getText().toString());
                             }
                         })
                         .create().show();
@@ -189,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     String[] array = getResources().getStringArray(R.array.sizes);
                                     sizeTV.setText(array[i]);
+                                    putPreferences("filter_settings", "size_filter", sizeTV.getText().toString());
+
                                 }
                             })
                             .create().show();
@@ -210,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String[] array = dbHandler.getColors();
                                 colorTV.setText(array[i]);
+                                putPreferences("filter_settings", "color_filter", colorTV.getText().toString());
                             }
                         })
                         .create().show();
@@ -235,7 +246,10 @@ public class MainActivity extends AppCompatActivity {
                 String typeText = typeTV.getText().toString();
                 String textColor = colorTV.getText().toString();
                 if(!typeText.equals("") && !typeText.equals(getResources().getStringArray(R.array.types)[0]))
-                    query = " WHERE type = '" + typeText + "' ";
+                    if(typeText.equals("Soirée"))
+                        query = " WHERE type IN ('Soirée', 'Sabo-Soirée', 'Sandal-Soirée') ";
+                    else
+                        query = " WHERE type = '" + typeText + "' ";
 
                 if(!textColor.equals("")){
                     if(query.equals(""))
@@ -256,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
                     query += "AND sold = ?";
 
                 getResults(query);
+
                 customAdapter = new CustomAdapter(MainActivity.this, MainActivity.this, products);
                 productList.setAdapter(customAdapter);
                 productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -302,68 +317,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void openTypeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.type_dialog_msg))
-                .setItems(R.array.types, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String[] array = getResources().getStringArray(R.array.types);
-                        typeTV.setText(array[i]);
-                        if(i == 0) {
-                            storeData();
-                            customAdapter = new CustomAdapter(MainActivity.this, MainActivity.this, products);
-                            productList.setAdapter(customAdapter);
-                            productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                            customAdapter.notifyDataSetChanged();
-                            String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
-                            sum.setText(sumText);
-                        }
-                        else
-                            filterByType(array[i]);
-                    }
-                })
-                .create().show();
-    }
-
-    private void filterByType(String s) {
-        ArrayList<Product> filteredList = new ArrayList<>();
-
-        for(Product str : products){
-            if(!str.get_type().equals("")) {
-                if (str.get_type().toLowerCase().trim().equals(s.toLowerCase())) {
-                    filteredList.add(str);
-                }
-            }
-        }
-
-        customAdapter.filteredList(filteredList);
-        String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
-        sum.setText(sumText);
-
-        if(filteredList.size() == 0){
-            empty.setVisibility(View.VISIBLE);
-            nodata.setVisibility(View.VISIBLE);
-        }
-        else{
-            empty.setVisibility(View.GONE);
-            nodata.setVisibility(View.GONE);
-        }
-    }
-
     private void filter(String text) {
         ArrayList<Product> filteredList = new ArrayList<>();
 
         for(Product str : products){
             if(str.get_name().toLowerCase().trim().contains(text.toLowerCase())){
-                if(!typeTV.getText().toString().equals(getResources().getStringArray(R.array.types)[0])) {
-                    if (str.get_type().equals(typeTV.getText().toString()))
                         filteredList.add(str);
-                }
-                else{
-                    filteredList.add(str);
-                }
             }
         }
 
@@ -389,7 +348,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void storeData() {
 
-        Cursor cursor = dbHandler.readAllData();
+        String query = getFilterSettings();
+        Cursor cursor = dbHandler.getResults(query);
 
         if(cursor != null){
 
@@ -431,4 +391,21 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeFilterPrefs();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        removeFilterPrefs();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
+    }
 }
