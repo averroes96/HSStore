@@ -38,7 +38,7 @@ public class MainActivity extends Commons {
 
     private TextView nodata;
     private ImageView empty;
-    private TextView sum;
+    private TextView sum,countRefTV;
     private ImageButton goToDepot,refsIB;
     private RecyclerView productList;
     private FloatingActionButton filterFAB;
@@ -64,6 +64,7 @@ public class MainActivity extends Commons {
         goToDepot = findViewById(R.id.goToDepot);
         refsIB = findViewById(R.id.refsIB);
         filterFAB = findViewById(R.id.filterFAB);
+        countRefTV = findViewById(R.id.countRefTV);
 
         dbHandler = new DBHandler(this);
         products = new ArrayList<>();
@@ -71,7 +72,7 @@ public class MainActivity extends Commons {
         refsIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivityForResult(new Intent(MainActivity.this, ProductsActivity.class),1);
             }
         });
 
@@ -119,16 +120,9 @@ public class MainActivity extends Commons {
         });
 
         //for(int i=1; i < 36; i++)
-        //    dbHandler.ignoreThis(String.valueOf(i));
+        //dbHandler.ignoreThis();
         
         storeData();
-
-        customAdapter = new CustomAdapter(MainActivity.this, this, products);
-        productList.setAdapter(customAdapter);
-        productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        customAdapter.notifyDataSetChanged();
-
-        sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
     }
 
     private void showFilterDialog() {
@@ -247,7 +241,7 @@ public class MainActivity extends Commons {
                 String textColor = colorTV.getText().toString();
                 if(!typeText.equals("") && !typeText.equals(getResources().getStringArray(R.array.types)[0]))
                     if(typeText.equals("Soirée"))
-                        query = " WHERE type IN ('Soirée', 'Sabo-Soirée', 'Sandal-Soirée') ";
+                        query = " WHERE type IN ('Soirée', 'Sabo-Soirée', 'Sandal-Soirée', 'Chaussure-Soirée') ";
                     else
                         query = " WHERE type = '" + typeText + "' ";
 
@@ -275,7 +269,10 @@ public class MainActivity extends Commons {
                 productList.setAdapter(customAdapter);
                 productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 customAdapter.notifyDataSetChanged();
-                sum.setText(customAdapter.getItemCount() + " " + getString(R.string.shoe_s));
+                String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
+                String refCountText = customAdapter.getRefCount() + " " + getString(R.string.reference_s);
+                sum.setText(sumText);
+                countRefTV.setText(refCountText);
                 dialog.dismiss();
             }
 
@@ -327,7 +324,10 @@ public class MainActivity extends Commons {
         }
 
         customAdapter.filteredList(filteredList);
-        sum.setText(customAdapter.getItemCount() + " Chaussure(s)");
+        String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
+        String refCountText = customAdapter.getRefCount() + " " + getString(R.string.reference_s);
+        sum.setText(sumText);
+        countRefTV.setText(refCountText);
 
         if(filteredList.size() == 0){
             empty.setVisibility(View.VISIBLE);
@@ -380,6 +380,15 @@ public class MainActivity extends Commons {
         }
         else
             Toast.makeText(this, "Erreur de la base de données", Toast.LENGTH_LONG).show();
+
+        customAdapter = new CustomAdapter(MainActivity.this, this, products);
+        productList.setAdapter(customAdapter);
+        productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        customAdapter.notifyDataSetChanged();
+        String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
+        String refCountText = customAdapter.getRefCount() + " " + getString(R.string.reference_s);
+        sum.setText(sumText);
+        countRefTV.setText(refCountText);
     }
 
     @Override
@@ -397,15 +406,4 @@ public class MainActivity extends Commons {
         removeFilterPrefs();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        removeFilterPrefs();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        recreate();
-    }
 }

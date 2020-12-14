@@ -267,29 +267,30 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
             }
 
             for(String size : sizes){
-                showSnackBarMessage(mainLayout, R.string.invalid_size);
-                return;
+                if(!TextUtils.isDigitsOnly(size)) {
+                    showSnackBarMessage(mainLayout, R.string.invalid_size);
+                    return;
+                }
+            }
+
+            for(String size : sizes) {
+                dbHandler.addProduct(
+                        new Product(
+                                referenceText,
+                                colorText.toUpperCase(),
+                                Integer.parseInt(size),
+                                imageUri == null ? "" : imageUri.toString(),
+                                typeTV.getText().toString()
+                        ));
             }
 
         }
-
-            for(String size : sizes) {
-                    dbHandler.addProduct(
-                            new Product(
-                                    referenceText,
-                                    colorText.toUpperCase(),
-                                    Integer.parseInt(size),
-                                    imageUri == null ? "" : imageUri.toString(),
-                                    typeTV.getText().toString()
-                            ));
-            }
 
             reset();
 
             showSnackBarMessage(mainLayout, R.string.product_s_added);
 
     }
-
 
     @Override
     public void pickFromGallery() {
@@ -322,7 +323,7 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
         String[] options = { "Camera", "Gallery"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("choisissez une image")
+        builder.setTitle(R.string.choose_source)
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -406,5 +407,44 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean checkViews(){
+
+        if(!reference.getText().toString().trim().isEmpty())
+            return false;
+        return colorsAndSizesET.getText().toString().trim().isEmpty();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(checkViews()){
+            super.onBackPressed();
+        }
+        else{
+            backDialog();
+        }
+    }
+
+    private void backDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_sure));
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(AddProductActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.create().show();
     }
 }

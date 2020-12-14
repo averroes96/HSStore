@@ -333,8 +333,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void ignoreThis(String ref) {
-        String query = "UPDATE product SET type = 'Sabo-Soirée' WHERE name = 'HS-" + ref + "' " ;
+    public void ignoreThis() {
+        String query = "UPDATE product SET type = 'Chaussure-Soirée' WHERE type = 'Soirée'" ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);

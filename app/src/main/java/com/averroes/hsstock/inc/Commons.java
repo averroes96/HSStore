@@ -45,7 +45,7 @@ public class Commons extends AppCompatActivity {
             String typeText = sharedPreferences.getString("type_filter", "");
             if (!typeText.equals("") && !typeText.equals(getResources().getStringArray(R.array.types)[0]))
                 if (typeText.equals("Soirée"))
-                    query = " WHERE type IN ('Soirée', 'Sabo-Soirée', 'Sandal-Soirée') ";
+                    query = " WHERE type IN ('Soirée', 'Sabo-Soirée', 'Sandal-Soirée', 'Chaussure-Soirée') ";
                 else
                     query = " WHERE type = '" + typeText + "' ";
         }

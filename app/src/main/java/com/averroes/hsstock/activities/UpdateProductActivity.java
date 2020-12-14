@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -24,18 +25,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.interfaces.CameraMethods;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.interfaces.StorageMethods;
 
-public class UpdateProductActivity extends AppCompatActivity implements CameraMethods, StorageMethods {
+public class UpdateProductActivity extends Commons implements CameraMethods, StorageMethods {
 
     private ImageButton back,delete;
     private ImageView image;
     private EditText reference, size, color;
     private TextView typeTV;
+    private ConstraintLayout mainLayout;
     private Button update;
 
     private Uri imageUri;
@@ -60,6 +63,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
         delete = findViewById(R.id.deleteBtn);
         image = findViewById(R.id.productImageIV);
         typeTV = findViewById(R.id.typeTV);
+        mainLayout = findViewById(R.id.mainLayout);
 
         cameraPerm = new String[]{
                 Manifest.permission.CAMERA,
@@ -172,19 +176,19 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
         sizeNumber = size.getText().toString().trim();
 
         if(TextUtils.isEmpty(referenceText)){
-            Toast.makeText(this, "Entrez la référence du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, R.string.enter_ref);
             return false;
         }
         if(TextUtils.isEmpty(colorText)){
-            Toast.makeText(this, "Entrez le couleur du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, R.string.enter_color);
             return false;
         }
         if(TextUtils.isEmpty(sizeNumber)){
-            Toast.makeText(this, "Entrez le pointure du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, R.string.enter_size);
             return false;
         }
         if(!TextUtils.isDigitsOnly(sizeNumber) || Integer.parseInt(sizeNumber) <= 0){
-            Toast.makeText(this, "Entrez un pointure valide s\'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, R.string.enter_valid_size);
             return false;
         }
 
@@ -282,7 +286,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
                     if(cameraResult && storageResult){
                         pickFromCamera();
                     }else{
-                        Toast.makeText(this, "Camera and storage permission are needed", Toast.LENGTH_LONG).show();
+                        showSnackBarMessage(mainLayout, R.string.camera_storage_perms_needed);
                     }
                 }
             } break;
@@ -292,7 +296,7 @@ public class UpdateProductActivity extends AppCompatActivity implements CameraMe
                     if(locationResult){
                         pickFromGallery();
                     }else{
-                        Toast.makeText(this, "Storage permission is needed", Toast.LENGTH_LONG).show();
+                        showSnackBarMessage(mainLayout, R.string.storage_perm_needed);
                     }
                 }
             } break;

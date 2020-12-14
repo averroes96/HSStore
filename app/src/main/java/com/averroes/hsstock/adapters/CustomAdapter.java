@@ -30,7 +30,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private Animation animation;
 
-    public CustomAdapter(Context context, Activity activity, ArrayList products){
+    public CustomAdapter(Context context, Activity activity, ArrayList<Product> products){
         this.context = context;
         this.products = products;
         this.activity = activity;
@@ -50,7 +50,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.name.setText(String.valueOf(products.get(position).get_name()));
         holder.size.setText(String.valueOf(products.get(position).get_size()));
         holder.color.setText(String.valueOf(products.get(position).get_color()));
-        if(!products.get(position).get_image().equals("")) {
+        if(!products.get(position).get_image().equals("") && Uri.parse(products.get(position).get_image()) != null) {
             holder.image.setImageURI(Uri.parse(products.get(position).get_image()));
         }
         else
@@ -74,6 +74,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     @Override
     public int getItemCount() {
         return products.size();
+    }
+
+    public int getRefCount(){
+        ArrayList<String> refsList = new ArrayList<>();
+        for (Product product : products){
+            if(!refsList.contains(product.get_name())){
+                refsList.add(product.get_name());
+            }
+        }
+
+        return refsList.size();
     }
 
     public void filteredList(ArrayList<Product> filteredList) {

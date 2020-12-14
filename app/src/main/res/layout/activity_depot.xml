@@ -73,7 +73,7 @@
             android:id="@+id/searchLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32sp"
+            android:layout_marginTop="16sp"
             android:gravity="center"
             android:padding="8dp"
             android:orientation="horizontal"
@@ -99,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:padding="16dp"
+                android:text="@string/type"
                 android:layout_weight="3"
                 android:textAlignment="center"
                 android:layout_marginStart="8dp"
@@ -113,7 +114,7 @@
             android:id="@+id/statsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="16sp"
             android:gravity="center"
             android:padding="8dp"
             android:orientation="horizontal"
@@ -128,8 +129,8 @@
                 android:fontFamily="monospace"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
                 app:layout_constraintHorizontal_bias="0.163"/>
 
             <TextView
@@ -137,11 +138,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="monospace"
                 android:text="TextView"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                app:layout_constraintHorizontal_bias="0.801" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
@@ -149,12 +150,14 @@
             android:id="@+id/locationsRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32sp"
+            android:layout_marginTop="16sp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statsLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            tools:listitem="@layout/depot_row" />
 
         <ImageView
             android:id="@+id/empty"
