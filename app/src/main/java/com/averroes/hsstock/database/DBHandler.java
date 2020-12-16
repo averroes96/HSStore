@@ -383,4 +383,38 @@ public class DBHandler extends SQLiteOpenHelper {
 
         return colors.split(",");
     }
+
+    public String getModelColors(String name) {
+
+        String colors = "";
+        String query = "SELECT color, count(*) FROM " + T_PRODUCT + " WHERE sold = ? AND name = ?" ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, new String[]{"0", name});
+        }
+
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                colors += cursor.getString(0) + "(" + cursor.getString(1) + ")" + ",";
+            }
+        }
+
+        return colors;
+    }
+
+    public Cursor getAllModels() {
+        String query = "SELECT distinct name,count(*), type" + " FROM " + T_PRODUCT + " GROUP BY name, type" ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, null);
+        }
+
+        return cursor;
+    }
+
+
 }

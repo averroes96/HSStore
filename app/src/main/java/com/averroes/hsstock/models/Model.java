@@ -20,6 +20,13 @@ public class Model {
         this._image = "";
     }
 
+    public Model(String _name, String _count, String _type) {
+        this._name = _name;
+        this._count = _count;
+        this._type = _type;
+        this._image = "";
+    }
+
     public String get_name() {
         return _name;
     }

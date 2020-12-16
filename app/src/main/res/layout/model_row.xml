@@ -51,7 +51,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textStyle="italic"
-                android:maxLines="1"
+                android:maxLines="3"
                 app:layout_constraintStart_toEndOf="@+id/imageIV"
                 app:layout_constraintTop_toBottomOf="@+id/referenceTV"
                 app:drawableStartCompat="@drawable/ic_color_grey" />

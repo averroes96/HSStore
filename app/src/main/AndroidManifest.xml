@@ -13,10 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activities.ProductActivity"></activity>
         <activity
-            android:name=".activities.ProductsActivity"
+            android:name=".activities.ModelsActivity"
             android:label="@string/title_activity_products"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".activities.AddDepotActivity" />
         <activity android:name=".activities.UpdatePositionActivity" />
         <activity android:name=".activities.PositionsActivity" />

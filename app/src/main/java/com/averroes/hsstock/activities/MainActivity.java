@@ -70,7 +70,7 @@ public class MainActivity extends Commons {
         refsIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, ProductsActivity.class),1);
+                startActivityForResult(new Intent(MainActivity.this, ModelsActivity.class),1);
             }
         });
 

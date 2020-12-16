@@ -194,5 +194,6 @@
     <string name="are_you_sure">Certains champs sont remplit, etes-vous sûr que vous voulez retournez?</string>
     <string name="colors">Color(s)</string>
     <string name="counter">Counter</string>
+    <string name="no_models">No models were found !</string>
 
 </resources>
