@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +25,10 @@ import java.util.ArrayList;
 public class ProductActivity extends AppCompatActivity {
 
     private RecyclerView modelsRV;
+    private ImageButton backBtn,filterBtn;
+    private EditText searchET;
     private ImageView emptyIV;
-    private TextView nodataTV;
+    private TextView nodataTV,counterTV;
 
     private ModelAdapter adapter;
     private ArrayList<Model> models;
@@ -36,9 +42,37 @@ public class ProductActivity extends AppCompatActivity {
         modelsRV = findViewById(R.id.modelsRV);
         emptyIV = findViewById(R.id.emptyIV);
         nodataTV = findViewById(R.id.nodataTV);
+        backBtn = findViewById(R.id.backBtn);
+        filterBtn = findViewById(R.id.filterBtn);
+        searchET = findViewById(R.id.searchET);
+        counterTV = findViewById(R.id.counterTV);
 
         models = new ArrayList<>();
         dbHandler = new DBHandler(this);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
 
         setModelsData();
 
@@ -46,6 +80,30 @@ public class ProductActivity extends AppCompatActivity {
         modelsRV.setAdapter(adapter);
         modelsRV.setLayoutManager(new LinearLayoutManager(ProductActivity.this));
         adapter.notifyDataSetChanged();
+    }
+
+    private void filter(String toString) {
+
+            ArrayList<Model> filteredList = new ArrayList<>();
+
+            for (Model model : models) {
+                if (model.get_name().toLowerCase().trim().contains(toString.toLowerCase())) {
+                    filteredList.add(model);
+                }
+            }
+
+            adapter.filteredList(filteredList);
+            String countText = adapter.getItemCount() + " " + getString(R.string.reference_s);
+            counterTV.setText(countText);
+
+            if(filteredList.size() == 0){
+                emptyIV.setVisibility(View.VISIBLE);
+                nodataTV.setVisibility(View.VISIBLE);
+            }else{
+                emptyIV.setVisibility(View.GONE);
+                nodataTV.setVisibility(View.GONE);
+            }
+
     }
 
     private void setModelsData() {

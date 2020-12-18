@@ -333,8 +333,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void ignoreThis() {
-        String query = "UPDATE product SET type = 'Chaussure-Soirée' WHERE type = 'Soirée'" ;
+    public void ignoreThis(int i) {
+        String query = "UPDATE product SET type = 'Sandal-Soirée' WHERE name = 'HS- " + i + "'" ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);
@@ -386,8 +386,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public String getModelColors(String name) {
 
-        String colors = "";
-        String query = "SELECT color, count(*) FROM " + T_PRODUCT + " WHERE sold = ? AND name = ?" ;
+        StringBuilder colors = new StringBuilder();
+        String query = "SELECT distinct color, count(color) FROM " + T_PRODUCT + " WHERE sold = ? AND name = ? GROUP BY color" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -397,15 +397,15 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if(cursor != null) {
             while (cursor.moveToNext()) {
-                colors += cursor.getString(0) + "(" + cursor.getString(1) + ")" + ",";
+                colors.append(cursor.getString(0)).append("(").append(cursor.getString(1)).append(")").append(", ");
             }
         }
 
-        return colors;
+        return colors.toString();
     }
 
     public Cursor getAllModels() {
-        String query = "SELECT distinct name,count(*), type" + " FROM " + T_PRODUCT + " GROUP BY name, type" ;
+        String query = "SELECT distinct name,count(*), type" + " FROM " + T_PRODUCT + " GROUP BY name" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 

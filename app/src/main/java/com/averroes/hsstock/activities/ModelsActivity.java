@@ -91,7 +91,7 @@ public class ModelsActivity extends AppCompatActivity {
                     Model model = new Model(cursor.getString(0), cursor.getString(1), cursor.getString(2));
 
                     String colors = dbHandler.getModelColors(model.get_name());
-                    model.set_colors(colors);
+                    model.set_colors(colors.replaceAll(",", " "));
 
                     models.add(model);
                 }

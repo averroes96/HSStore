@@ -70,7 +70,7 @@ public class MainActivity extends Commons {
         refsIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, ModelsActivity.class),1);
+                startActivityForResult(new Intent(MainActivity.this, ProductActivity.class),1);
             }
         });
 
@@ -84,7 +84,7 @@ public class MainActivity extends Commons {
         sellsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, SellsActivity.class), 2);
+                startActivityForResult(new Intent(MainActivity.this, SellsActivity.class), 1);
             }
         });
 
@@ -117,10 +117,19 @@ public class MainActivity extends Commons {
             }
         });
 
-        //for(int i=1; i < 36; i++)
-        //dbHandler.ignoreThis();
+        //for(int i=58; i < 90; i++)
+        //dbHandler.ignoreThis(i);
         
         storeData();
+
+        customAdapter = new CustomAdapter(MainActivity.this, this, products);
+        productList.setAdapter(customAdapter);
+        productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        customAdapter.notifyDataSetChanged();
+        String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
+        String refCountText = customAdapter.getRefCount() + " " + getString(R.string.reference_s);
+        sum.setText(sumText);
+        countRefTV.setText(refCountText);
     }
 
     private void showFilterDialog() {
@@ -378,15 +387,6 @@ public class MainActivity extends Commons {
         }
         else
             Toast.makeText(this, "Erreur de la base de données", Toast.LENGTH_LONG).show();
-
-        customAdapter = new CustomAdapter(MainActivity.this, this, products);
-        productList.setAdapter(customAdapter);
-        productList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        customAdapter.notifyDataSetChanged();
-        String sumText = customAdapter.getItemCount() + " " + getString(R.string.shoe_s);
-        String refCountText = customAdapter.getRefCount() + " " + getString(R.string.reference_s);
-        sum.setText(sumText);
-        countRefTV.setText(refCountText);
     }
 
     @Override

@@ -10,12 +10,97 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/shape_menu"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_activity_products"
+                android:textColor="@color/colorWhite"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toEndOf="@+id/backBtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back_white" />
+
+            <ImageButton
+                android:id="@+id/filterBtn"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_filter_white" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+            android:layout_marginTop="32dp">
+
+
+            <EditText
+                android:id="@+id/searchET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangle"
+                android:drawableStart="@drawable/ic_search_grey"
+                android:ems="10"
+                android:drawablePadding="8sp"
+                android:layout_weight="3"
+                android:hint="@string/search"
+                android:inputType="textPersonName"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/counterTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_weight="2"
+                android:text="@string/reference_s"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/modelsRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchLayout"
             tools:listitem="@layout/model_row" />
 
         <ImageView
