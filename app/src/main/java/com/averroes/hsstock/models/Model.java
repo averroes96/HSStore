@@ -2,7 +2,7 @@ package com.averroes.hsstock.models;
 
 public class Model {
 
-    private String _name,_colors,_count,_type,_image;
+    private String _name,_colors,_count,_type,_image,_sizes;
 
     public Model() {
         this._name = "";

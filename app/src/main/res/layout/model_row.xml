@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:padding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -56,49 +57,61 @@
                         android:textStyle="bold"
                         app:drawableStartCompat="@drawable/ic_reference_grey" />
 
-                    <TextView
-                        android:id="@+id/typeTV"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:alpha="0.80"
-                        android:drawablePadding="5dp"
-                        android:text="@string/type"
-                        android:textSize="18sp"
-                        android:textStyle="bold|italic"
-                        app:drawableStartCompat="@drawable/ic_type_grey" />
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mainLL">
 
-                    <TextView
-                        android:id="@+id/counterTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:drawablePadding="5dp"
-                        android:text="@string/counter"
-                        android:textSize="16sp"
-                        android:textStyle="italic|bold"
-                        android:alpha="0.80"
-                        app:drawableStartCompat="@drawable/ic_size_grey" />
+                        <TextView
+                            android:id="@+id/counterTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/counter"
+                            android:layout_marginEnd="8dp"
+                            android:textSize="16sp"
+                            android:textStyle="italic|bold"
+                            android:alpha="0.80" />
+
+                        <TextView
+                            android:id="@+id/colorsTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="4sp"
+                            android:maxLines="1"
+                            android:text="@string/colors"
+                            android:textSize="16sp"
+                            android:textStyle="italic" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
             </LinearLayout>
 
+
+
+
             <TextView
-                android:id="@+id/colorsTV"
+                android:id="@+id/typeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="4sp"
-                android:maxLines="2"
-                android:text="@string/colors"
-                android:textSize="16sp"
-                android:textStyle="italic"
-                app:drawableStartCompat="@drawable/ic_color_grey"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:alpha="0.80"
+                android:background="@drawable/cornered_shape"
+                android:drawablePadding="5dp"
+                android:padding="4sp"
+                android:text="@string/type"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mainLL" />
+                app:layout_constraintTop_toTopOf="parent" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

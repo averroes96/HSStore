@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +20,7 @@ import com.averroes.hsstock.R;
 import com.averroes.hsstock.adapters.ModelAdapter;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Model;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -74,12 +76,30 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showFilterDialog();
+            }
+
+            private void showFilterDialog() {
+
+                final BottomSheetDialog dialog = new BottomSheetDialog(ProductActivity.this);
+
+                final View view = LayoutInflater.from(ProductActivity.this).inflate(R.layout.filter_model_layout, null);
+                dialog.setContentView(view);
+                dialog.show();
+            }
+        });
+
         setModelsData();
 
         adapter = new ModelAdapter(ProductActivity.this, this, models);
         modelsRV.setAdapter(adapter);
         modelsRV.setLayoutManager(new LinearLayoutManager(ProductActivity.this));
         adapter.notifyDataSetChanged();
+        String countText = adapter.getItemCount() + " " + getString(R.string.reference_s);
+        counterTV.setText(countText);
     }
 
     private void filter(String toString) {
@@ -123,10 +143,14 @@ public class ProductActivity extends AppCompatActivity {
 
                 while(cursor.moveToNext()){
 
-                    Model model = new Model(cursor.getString(0), cursor.getString(1), cursor.getString(2));
+                    Model model = new Model(
+                            cursor.getString(0),
+                            cursor.getString(1) + " " + getString(R.string.piece_s) + " |",
+                            cursor.getString(2)
+                    );
 
-                    String colors = dbHandler.getModelColors(model.get_name());
-                    model.set_colors(colors);
+                    String colors = dbHandler.getModelColorsCount(model.get_name());
+                    model.set_colors(colors + " " + getString(R.string.colors));
 
                     models.add(model);
                 }

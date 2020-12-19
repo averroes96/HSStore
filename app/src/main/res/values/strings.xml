@@ -195,5 +195,7 @@
     <string name="colors">Color(s)</string>
     <string name="counter">Counter</string>
     <string name="no_models">No models were found !</string>
+    <string name="piece_s">Piece(s)</string>
+    <string name="sizes">Sizes</string>
 
 </resources>
