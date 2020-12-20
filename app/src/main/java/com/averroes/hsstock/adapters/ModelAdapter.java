@@ -21,6 +21,7 @@ import com.averroes.hsstock.activities.UpdatePositionActivity;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.models.Model;
 import com.averroes.hsstock.models.Position;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -57,11 +58,12 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.MyViewHolder
         holder.typeTV.setText(models.get(position).get_type());
         holder.counterTV.setText(models.get(position).get_count());
         holder.colorsTV.setText(models.get(position).get_colors());
-        if(!models.get(position).get_image().equals("") && Uri.parse(models.get(position).get_image()) != null) {
-            holder.imageIV.setImageURI(Uri.parse(models.get(position).get_image()));
-        }
-        else
+        try{
+            Picasso.get().load(models.get(position).get_image()).placeholder(R.drawable.ic_image_grey_48).into(holder.imageIV);
+        }catch(Exception e){
             holder.imageIV.setImageResource(R.drawable.ic_image_grey_48);
+        }
+
         /*
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override

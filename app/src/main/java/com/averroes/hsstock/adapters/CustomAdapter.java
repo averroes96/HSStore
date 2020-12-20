@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.activities.UpdateProductActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,11 +51,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.name.setText(String.valueOf(products.get(position).get_name()));
         holder.size.setText(String.valueOf(products.get(position).get_size()));
         holder.color.setText(String.valueOf(products.get(position).get_color()));
+        /*
         if(!products.get(position).get_image().equals("") && Uri.parse(products.get(position).get_image()) != null) {
             holder.image.setImageURI(Uri.parse(products.get(position).get_image()));
         }
         else
+            holder.image.setImageResource(R.drawable.ic_image_grey_48);*/
+
+        try{
+            Picasso.get().load(products.get(position).get_image()).placeholder(R.drawable.ic_image_grey_48).into(holder.image);
+        }catch(Exception e){
             holder.image.setImageResource(R.drawable.ic_image_grey_48);
+        }
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override

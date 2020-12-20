@@ -49,7 +49,6 @@
                         android:id="@+id/referenceTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:drawablePadding="5dp"
                         android:text="@string/reference"
@@ -69,11 +68,10 @@
                             android:id="@+id/counterTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/counter"
                             android:layout_marginEnd="8dp"
+                            android:text="@string/counter"
                             android:textSize="16sp"
-                            android:textStyle="italic|bold"
-                            android:alpha="0.80" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/colorsTV"
@@ -81,36 +79,32 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="4sp"
                             android:maxLines="1"
+                            android:textStyle="bold"
+
+
                             android:text="@string/colors"
-                            android:textSize="16sp"
-                            android:textStyle="italic" />
+                            android:textSize="16sp" />
+
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/typeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:alpha="0.80"
+                        android:background="@drawable/cornered_shape"
+                        android:padding="8sp"
+                        android:text="@string/type"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic" />
 
 
                 </LinearLayout>
 
             </LinearLayout>
-
-
-
-
-            <TextView
-                android:id="@+id/typeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:alpha="0.80"
-                android:background="@drawable/cornered_shape"
-                android:drawablePadding="5dp"
-                android:padding="4sp"
-                android:text="@string/type"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
-                android:textStyle="bold|italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
 

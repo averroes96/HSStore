@@ -142,11 +142,11 @@ public class ProductActivity extends AppCompatActivity {
                 models.clear();
 
                 while(cursor.moveToNext()){
-
                     Model model = new Model(
                             cursor.getString(0),
                             cursor.getString(1) + " " + getString(R.string.piece_s) + " |",
-                            cursor.getString(2)
+                            cursor.getString(2),
+                            cursor.getString(3)
                     );
 
                     String colors = dbHandler.getModelColorsCount(model.get_name());

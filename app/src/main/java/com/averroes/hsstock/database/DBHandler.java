@@ -407,7 +407,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public String getModelColorsCount(String name) {
 
         String colors = "";
-        String query = "SELECT count(color) FROM " + T_PRODUCT + " WHERE sold = ? AND name = ?" ;
+        String query = "SELECT count( distinct color) FROM " + T_PRODUCT + " WHERE sold = ? AND name = ?" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -445,7 +445,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public Cursor getAllModels() {
-        String query = "SELECT distinct name,count(*), type" + " FROM " + T_PRODUCT + " GROUP BY name" ;
+        String query = "SELECT distinct name,count(*), type, image" + " FROM " + T_PRODUCT + " GROUP BY name" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 
