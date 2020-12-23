@@ -197,5 +197,9 @@
     <string name="no_models">No models were found !</string>
     <string name="piece_s">Piece(s)</string>
     <string name="sizes">Sizes</string>
+    <string name="colors_two">Available colors:</string>
+    <string name="sizes_two">Available sizes:</string>
+    <string name="piece_s_two">Piece(s):</string>
+    <string name="title_activity_update_model">ScrollingActivity</string>
 
 </resources>

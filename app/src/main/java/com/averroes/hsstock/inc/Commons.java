@@ -1,10 +1,12 @@
 package com.averroes.hsstock.inc;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.averroes.hsstock.R;
@@ -82,5 +84,18 @@ public class Commons extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public void openTypeDialog(final TextView textView) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.type_dialog_msg))
+                .setItems(R.array.types, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String[] array = getResources().getStringArray(R.array.types);
+                        textView.setText(array[i]);
+                    }
+                })
+                .create().show();
     }
 }

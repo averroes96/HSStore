@@ -144,7 +144,7 @@ public class ProductActivity extends AppCompatActivity {
                 while(cursor.moveToNext()){
                     Model model = new Model(
                             cursor.getString(0),
-                            cursor.getString(1) + " " + getString(R.string.piece_s) + " |",
+                            cursor.getString(1),
                             cursor.getString(2),
                             cursor.getString(3)
                     );

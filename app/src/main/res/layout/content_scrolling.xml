@@ -6,45 +6,57 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.ModelsActivity"
-    tools:showIn="@layout/activity_products">
+    tools:showIn="@layout/activity_update_model">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="32sp"
+        android:padding="16sp"
+        android:gravity="center">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/modelsRV"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/referencesET"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/shape_rectangle"
+            android:drawableStart="@drawable/ic_reference_grey"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:hint="@string/reference"
+            android:inputType="textPersonName"
+            android:padding="16dp" />
 
-            tools:listitem="@layout/model_row" />
-
-        <ImageView
-            android:id="@+id/emptyIV"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="32dp"
-            android:alpha="0.3"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_empty_grey" />
+        <EditText
+            android:id="@+id/colorsAndSizesET"
+            android:drawablePadding="5dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_rectangle"
+            android:drawableStart="@drawable/ic_size_grey"
+            android:ems="10"
+            android:hint="@string/colors_and_sizes"
+            android:inputType="textMultiLine"
+            android:padding="16dp" />
 
         <TextView
-            android:id="@+id/nodataTV"
-            android:layout_width="wrap_content"
+            android:id="@+id/typeTV"
+            android:layout_width="300dp"
+            android:drawablePadding="4dp"
             android:layout_height="wrap_content"
-            android:alpha="0.4"
-            android:visibility="gone"
-            android:text="@string/no_models"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emptyIV" />
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_rectangle"
+            android:ems="10"
+            android:hint="@string/type"
+            android:textSize="18sp"
+            android:padding="16dp"
+            app:drawableStartCompat="@drawable/ic_type_grey"
+            app:drawableEndCompat="@drawable/ic_arrow_down_grey" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
 
 
 </ScrollView>
