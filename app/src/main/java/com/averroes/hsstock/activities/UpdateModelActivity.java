@@ -94,6 +94,13 @@ public class UpdateModelActivity extends Commons {
             typeTV.setTextColor( getResources().getColor(R.color.colorBlack));
             typeTV.setText(typeText);
 
+            for(String color : colorsText){
+                if(!color.isEmpty()) {
+                    String temp = color + ": " + dbHandler.getColorSizesByName(referenceText, color);
+                    colorsAndSizesET.append(temp + "\n");
+                }
+            }
+
         }
     }
 

@@ -456,5 +456,25 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public String getColorSizesByName(String name, String color) {
+
+        StringBuilder sizes = new StringBuilder();
+        String query = "SELECT size FROM " + T_PRODUCT + " WHERE sold = ? AND name = ? AND color = ? GROUP BY size" ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, new String[]{"0", name, color});
+        }
+
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                sizes.append(cursor.getString(0)).append(",");
+            }
+        }
+
+        return sizes.toString();
+    }
+
 
 }
