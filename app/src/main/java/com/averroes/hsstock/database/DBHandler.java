@@ -384,7 +384,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return colors.split(",");
     }
 
-    public String getModelColors(String name) {
+    public String getModelColorsWithCount(String name) {
 
         StringBuilder colors = new StringBuilder();
         String query = "SELECT distinct color, count(color) FROM " + T_PRODUCT + " WHERE sold = ? AND name = ? GROUP BY color" ;
@@ -398,6 +398,26 @@ public class DBHandler extends SQLiteOpenHelper {
         if(cursor != null) {
             while (cursor.moveToNext()) {
                 colors.append(cursor.getString(0)).append("(").append(cursor.getString(1)).append(")").append(", ");
+            }
+        }
+
+        return colors.toString();
+    }
+
+    public String getModelColors(String name) {
+
+        StringBuilder colors = new StringBuilder();
+        String query = "SELECT distinct color FROM " + T_PRODUCT + " WHERE sold = ? AND name = ?" ;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, new String[]{"0", name});
+        }
+
+        if(cursor != null) {
+            while (cursor.moveToNext()) {
+                colors.append(cursor.getString(0)).append(", ");
             }
         }
 
@@ -459,7 +479,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public String getColorSizesByName(String name, String color) {
 
         StringBuilder sizes = new StringBuilder();
-        String query = "SELECT size FROM " + T_PRODUCT + " WHERE sold = ? AND name = ? AND color = ? GROUP BY size" ;
+        String query = "SELECT size FROM " + T_PRODUCT + " WHERE sold = ? AND name = ? AND color = ?" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 

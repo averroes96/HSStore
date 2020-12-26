@@ -15,8 +15,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".activities.UpdateModelActivity"
-            android:label="@string/title_activity_update_model"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"/>
         <activity
             android:name=".activities.ProductActivity"
             android:parentActivityName=".activities.MainActivity" />

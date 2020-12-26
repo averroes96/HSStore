@@ -44,16 +44,27 @@
         <TextView
             android:id="@+id/typeTV"
             android:layout_width="300dp"
-            android:drawablePadding="4dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/shape_rectangle"
+            android:drawablePadding="4dp"
             android:ems="10"
             android:hint="@string/type"
-            android:textSize="18sp"
             android:padding="16dp"
-            app:drawableStartCompat="@drawable/ic_type_grey"
-            app:drawableEndCompat="@drawable/ic_arrow_down_grey" />
+            android:textSize="18sp"
+            app:drawableEndCompat="@drawable/ic_arrow_down_grey"
+            app:drawableStartCompat="@drawable/ic_type_grey" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@color/colorPrimary"
+            android:minWidth="120dp"
+            android:text="@string/update"/>
 
     </LinearLayout>
 

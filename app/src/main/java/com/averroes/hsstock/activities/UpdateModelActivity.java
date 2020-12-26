@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,10 +28,12 @@ public class UpdateModelActivity extends Commons {
 
     private EditText referenceET, colorsAndSizesET;
     private TextView typeTV;
+    private ImageView imageIV;
 
     private String referenceText,typeText,imageText;
     private String[] colorsText;
     private List<String> colorsAndSizes,sizes;
+    private Button saveBtn;
 
     private Uri imageUri;
 
@@ -45,21 +49,15 @@ public class UpdateModelActivity extends Commons {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolBarLayout.setTitle(getTitle());
+        toolBarLayout.setTitle("");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save();
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         referenceET = findViewById(R.id.referencesET);
         colorsAndSizesET = findViewById(R.id.colorsAndSizesET);
         typeTV = findViewById(R.id.typeTV);
+        imageIV = findViewById(R.id.imageIV);
+        saveBtn = findViewById(R.id.saveBtn);
 
         cameraPerm = new String[]{
                 Manifest.permission.CAMERA,
@@ -78,6 +76,15 @@ public class UpdateModelActivity extends Commons {
             }
         });
 
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save();
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         init();
     }
 
@@ -91,14 +98,20 @@ public class UpdateModelActivity extends Commons {
             colorsText = getIntent().getStringArrayExtra("colors");
 
             referenceET.setText(referenceText);
-            typeTV.setTextColor( getResources().getColor(R.color.colorBlack));
+            typeTV.setTextColor(getResources().getColor(R.color.colorBlack));
             typeTV.setText(typeText);
 
             for(String color : colorsText){
-                if(!color.isEmpty()) {
-                    String temp = color + ": " + dbHandler.getColorSizesByName(referenceText, color);
+                if(!color.trim().isEmpty()) {
+                    String temp = color.trim() + ": " + dbHandler.getColorSizesByName(referenceText, color.trim());
                     colorsAndSizesET.append(temp + "\n");
                 }
+            }
+
+            try{
+                Picasso.get().load(imageText).placeholder(R.drawable.ic_image_grey_48).into(imageIV);
+            }catch(Exception e){
+                imageIV.setImageResource(R.drawable.ic_image_grey_48);
             }
 
         }

@@ -107,7 +107,7 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.MyViewHolder
         }
 
         nameTV.setText(model.get_name());
-        colorsTV.setText(dbHandler.getModelColors(model.get_name()).replace(",", " "));
+        colorsTV.setText(dbHandler.getModelColorsWithCount(model.get_name()).replace(",", " "));
         sizesTV.setText(dbHandler.getModelSizes(model.get_name()).replace(",", " "));
         counterTV.setText(model.get_count());
 
