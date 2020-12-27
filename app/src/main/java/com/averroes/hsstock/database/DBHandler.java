@@ -145,14 +145,21 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public void deleteProduct(String id){
+    public void deleteProductByID(String id){
 
         SQLiteDatabase db = getWritableDatabase();
         long res = db.delete(T_PRODUCT, "id = ?", new String[]{id});
         if(res == -1)
             Toast.makeText(context, "Erreur de base de données lors de la suppression du produit", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(context, "Product deleted", Toast.LENGTH_LONG).show();
+
+    }
+
+    public void deleteProductByNameAndType(String name, String type){
+
+        SQLiteDatabase db = getWritableDatabase();
+        long res = db.delete(T_PRODUCT, "name = ? AND type = ?", new String[]{name, type});
+        if(res == -1)
+            Toast.makeText(context, "Erreur de base de données lors de la suppression du produit", Toast.LENGTH_LONG).show();
 
     }
 
@@ -333,8 +340,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void ignoreThis(int i) {
-        String query = "UPDATE product SET type = 'Sandal-Soirée' WHERE name = 'HS- " + i + "'" ;
+    public void ignoreThis(String i) {
+        String query = "UPDATE product SET type = 'Sandal-Soirée' WHERE name = 'HS-" + i + "'" ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);

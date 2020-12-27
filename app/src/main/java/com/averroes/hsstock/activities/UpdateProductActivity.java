@@ -147,7 +147,7 @@ public class UpdateProductActivity extends Commons implements CameraMethods, Sto
     }
 
     private void deleteProduct() {
-        dbHandler.deleteProduct(getIntent().getStringExtra("id"));
+        dbHandler.deleteProductByID(getIntent().getStringExtra("id"));
     }
 
     public void getIntentData(){

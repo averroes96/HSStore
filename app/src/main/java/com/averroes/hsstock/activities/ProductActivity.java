@@ -1,9 +1,11 @@
 package com.averroes.hsstock.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -158,5 +160,14 @@ public class ProductActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(this, R.string.db_error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == 1){
+            recreate();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

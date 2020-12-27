@@ -52,6 +52,9 @@
         <item name="sabot">Sabo</item>
         <item name="bottine">Booting</item>
         <item name="sandal">Sandal</item>
+        <item name="boot_fillette">Boot-Fillette</item>
+        <item name="adidas">Adidas</item>
+        <item name="adidas_kids">Adidas-Enfant</item>
     </string-array>
     <string-array name="sizes">
         <item>15</item>
@@ -201,5 +204,6 @@
     <string name="sizes_two">Available sizes:</string>
     <string name="piece_s_two">Piece(s):</string>
     <string name="title_activity_update_model">ScrollingActivity</string>
+    <string name="model_updated">Model was successfully updated!</string>
 
 </resources>
