@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,12 +22,13 @@ import android.widget.Toast;
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.adapters.ModelAdapter;
 import com.averroes.hsstock.database.DBHandler;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Model;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
-public class ProductActivity extends AppCompatActivity {
+public class ProductActivity extends Commons {
 
     private RecyclerView modelsRV;
     private ImageButton backBtn,filterBtn;
@@ -37,6 +39,7 @@ public class ProductActivity extends AppCompatActivity {
     private ModelAdapter adapter;
     private ArrayList<Model> models;
     private DBHandler dbHandler;
+    private String chosenType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class ProductActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                filter(editable.toString());
+                filter(editable.toString(), chosenType);
             }
         });
 
@@ -90,7 +93,29 @@ public class ProductActivity extends AppCompatActivity {
 
                 final View view = LayoutInflater.from(ProductActivity.this).inflate(R.layout.filter_model_layout, null);
                 dialog.setContentView(view);
+
+                final TextView typeTV = view.findViewById(R.id.typeTV);
+                Button filterBtn = view.findViewById(R.id.filterBtn);
+
+                typeTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openTypeDialog(typeTV);
+                    }
+                });
+
+                filterBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        chosenType = typeTV.getText().toString();
+                        filter(searchET.getText().toString(), chosenType);
+                        dialog.dismiss();
+                    }
+                });
+
                 dialog.show();
+
+
             }
         });
 
@@ -104,14 +129,31 @@ public class ProductActivity extends AppCompatActivity {
         counterTV.setText(countText);
     }
 
-    private void filter(String toString) {
+    private void filter(String toString, String type) {
 
             ArrayList<Model> filteredList = new ArrayList<>();
 
             for (Model model : models) {
-                if (model.get_name().toLowerCase().trim().contains(toString.toLowerCase())) {
-                    filteredList.add(model);
+                if(!type.equals("") && !type.equals(getResources().getStringArray(R.array.types)[0])){
+                    if(type.equals(getResources().getStringArray(R.array.types)[2])){
+                        if(model.get_type().contains(type)){
+                            if (model.get_name().toLowerCase().trim().contains(toString.toLowerCase())) {
+                                filteredList.add(model);
+                            }
+                        }
+                    }
+                    else if(model.get_type().equals(type)){
+                        if (model.get_name().toLowerCase().trim().contains(toString.toLowerCase())) {
+                            filteredList.add(model);
+                        }
+                    }
                 }
+                else{
+                    if (model.get_name().toLowerCase().trim().contains(toString.toLowerCase())) {
+                        filteredList.add(model);
+                    }
+                }
+
             }
 
             adapter.filteredList(filteredList);

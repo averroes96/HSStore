@@ -183,7 +183,7 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
             }
 
             for(String size : sizes){
-                if(!TextUtils.isDigitsOnly(size)) {
+                if(!TextUtils.isDigitsOnly(size) || !isValidSize(size)) {
                     showSnackBarMessage(mainLayout, R.string.invalid_size);
                     return;
                 }

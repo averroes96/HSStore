@@ -188,7 +188,7 @@ public class UpdateModelActivity extends Commons implements CameraMethods, Stora
             }
 
             for(String size : sizes){
-                if(!TextUtils.isDigitsOnly(size)) {
+                if(!TextUtils.isDigitsOnly(size) || !isValidSize(size)) {
                     showSnackBarMessage(mainLayout, R.string.invalid_size);
                     return;
                 }

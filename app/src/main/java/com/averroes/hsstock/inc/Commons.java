@@ -98,4 +98,12 @@ public class Commons extends AppCompatActivity {
                 })
                 .create().show();
     }
+
+    public boolean isValidSize(String stringSize){
+
+        int size = Integer.parseInt(stringSize);
+
+        return size <= 45 && size >= 15;
+
+    }
 }

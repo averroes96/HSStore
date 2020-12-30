@@ -472,7 +472,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public Cursor getAllModels() {
-        String query = "SELECT distinct name,count(*), type, image" + " FROM " + T_PRODUCT + " GROUP BY name" ;
+        String query = "SELECT distinct name,count(*), type, image" + " FROM " + T_PRODUCT + " WHERE sold = 0 GROUP BY name" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 

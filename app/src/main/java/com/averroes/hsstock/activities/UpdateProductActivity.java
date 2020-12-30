@@ -187,7 +187,7 @@ public class UpdateProductActivity extends Commons implements CameraMethods, Sto
             showSnackBarMessage(mainLayout, R.string.enter_size);
             return false;
         }
-        if(!TextUtils.isDigitsOnly(sizeNumber) || Integer.parseInt(sizeNumber) <= 0){
+        if(!TextUtils.isDigitsOnly(sizeNumber) || isValidSize(sizeNumber)){
             showSnackBarMessage(mainLayout, R.string.enter_valid_size);
             return false;
         }
