@@ -2,6 +2,7 @@ package com.averroes.hsstock.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,7 +63,10 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull ModelAdapter.MyViewHolder holder, final int position) {
 
         holder.referenceTV.setText(models.get(position).get_name());
-        holder.typeTV.setText(models.get(position).get_type());
+        if(models.get(position).get_type().equals(""))
+            holder.typeTV.setText(activity.getString(R.string.not_defined));
+        else
+            holder.typeTV.setText(models.get(position).get_type());
         holder.counterTV.setText(models.get(position).get_count() + " " + activity.getString(R.string.piece_s) + " |");
         holder.colorsTV.setText(models.get(position).get_colors());
         try{
@@ -73,18 +78,18 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.MyViewHolder
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showModel(models.get(position));
+                showModel(models.get(position), position);
             }
         });
 
     }
 
-    private void showModel(final Model model) {
+    private void showModel(final Model model, final int i) {
         final BottomSheetDialog dialog = new BottomSheetDialog(activity);
         final View v = LayoutInflater.from(activity).inflate(R.layout.model_layout, null);
         dialog.setContentView(v);
 
-        ImageButton backBtn,editBtn;
+        ImageButton backBtn,editBtn,deleteBtn;
         ImageView imageIV;
         TextView colorsTV,sizesTV,counterTV, nameTV;
         RecyclerView productsRV;
@@ -97,6 +102,7 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.MyViewHolder
         productsRV = v.findViewById(R.id.productsRV);
         nameTV = v.findViewById(R.id.nameTV);
         editBtn = v.findViewById(R.id.editBtn);
+        deleteBtn = v.findViewById(R.id.deleteBtn);
 
         dialog.show();
 
@@ -128,6 +134,43 @@ public class ModelAdapter extends RecyclerView.Adapter<ModelAdapter.MyViewHolder
                 intent.putExtra("colors", dbHandler.getModelColors(model.get_name()).split(","));
                 activity.startActivityForResult(intent, 1);
             }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmDialog(i);
+            }
+
+            private void confirmDialog(final int i) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                String title = activity.getString(R.string.delete) + " " + model.get_name();
+                String message = activity.getString(R.string.delete_confirm_msg) + model.get_name() + activity.getString(R.string.interogation_mark);
+                builder.setTitle(title);
+                builder.setMessage(message);
+                builder.setPositiveButton(activity.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteProduct();
+                        dialog.dismiss();
+                    }
+
+                    private void deleteProduct() {
+                        dbHandler.deleteProductByNameAndType(model.get_name(), model.get_type());
+                        activity.recreate();
+                    }
+                });
+                builder.setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                builder.create().show();
+            }
+
         });
 
         storeData(model);
