@@ -115,7 +115,6 @@ public class ProductActivity extends Commons {
 
                 dialog.show();
 
-
             }
         });
 

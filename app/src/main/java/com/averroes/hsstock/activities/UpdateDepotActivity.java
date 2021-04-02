@@ -71,7 +71,8 @@ public class UpdateDepotActivity extends AppCompatActivity {
             selectedDepot = new Depot(
                     Integer.parseInt(getIntent().getStringExtra("id")),
                     getIntent().getStringExtra("reference"),
-                    getIntent().getStringExtra("position")
+                    getIntent().getStringExtra("position"),
+                    ""
             );
 
             referenceET.setText(selectedDepot.get_reference());
@@ -88,18 +89,19 @@ public class UpdateDepotActivity extends AppCompatActivity {
         positionText = positionET.getText().toString().trim();
 
         if(TextUtils.isEmpty(referenceText)){
-            Toast.makeText(this, "Entrez la référence du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entrez la référence du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
             return false;
         }
         if(TextUtils.isEmpty(positionText)){
-            Toast.makeText(this, "Entrez la position du chaussure s\'il vous plaît", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entrez la position du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
             return false;
         }
 
         Depot depot = new Depot(
                 Integer.parseInt(getIntent().getStringExtra("id")),
                 referenceText,
-                positionText
+                positionText,
+                ""
         );
 
         return dbHandler.updateDepot(depot);

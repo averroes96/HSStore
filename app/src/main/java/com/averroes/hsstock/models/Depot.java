@@ -7,14 +7,16 @@ public class Depot {
     private int _id;
     private String _reference;
     private String _location;
+    private String _region;
 
     public Depot() {
     }
 
-    public Depot(int id, String reference, String location) {
+    public Depot(int id, String reference, String location, String region) {
         this._id = id;
         this._reference = reference;
         this._location = location;
+        this._region = region;
     }
 
     public Depot(String _reference, String _location) {
@@ -44,6 +46,14 @@ public class Depot {
 
     public void set_location(String _location) {
         this._location = _location;
+    }
+
+    public String get_region() {
+        return _region;
+    }
+
+    public void set_region(String _region) {
+        this._region = _region;
     }
 
     @NonNull

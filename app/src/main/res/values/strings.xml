@@ -56,6 +56,11 @@
         <item name="adidas">Adidas</item>
         <item name="adidas_kids">Adidas-Enfant</item>
     </string-array>
+    <string-array name="regions">
+        <item name="centre">Centre</item>
+        <item name="rekad">Rekad</item>
+        <item name="walid">Walid</item>
+    </string-array>
     <string-array name="sizes">
         <item>15</item>
         <item>16</item>
@@ -207,5 +212,8 @@
     <string name="model_updated">Model was successfully updated!</string>
     <string name="interogation_mark">\?</string>
     <string name="not_defined">Undefined</string>
+    <string name="confirm">Confirm</string>
+    <string name="region">Region</string>
+    <string name="region_filtering">Filtrage par region</string>
 
 </resources>

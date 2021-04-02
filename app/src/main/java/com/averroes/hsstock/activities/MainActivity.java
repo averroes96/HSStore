@@ -117,8 +117,7 @@ public class MainActivity extends Commons {
             }
         });
 
-        //for(int i=58; i < 90; i++)
-        //    dbHandler.ignoreThis(String.valueOf(i));
+        //dbHandler.ignoreThis();
         
         storeData();
 

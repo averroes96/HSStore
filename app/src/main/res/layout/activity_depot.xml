@@ -34,6 +34,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:id="@+id/regionsBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/positionsBtn"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_region_white_24" />
+
+            <ImageButton
                 android:id="@+id/positionsBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

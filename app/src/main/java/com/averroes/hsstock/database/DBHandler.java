@@ -16,7 +16,7 @@ import com.averroes.hsstock.models.Sell;
 public class DBHandler extends SQLiteOpenHelper {
 
     private Context context;
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static String DB_NAME = "Product.db";
     public static final String T_PRODUCT = "product";
     public static final String COLUMN_ID = "id";
@@ -35,6 +35,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_REF = "reference";
     public static final String COLUMN_LOCATION = "location";
     private static final String COLUMN_TYPE = "type";
+    private static final String COLUMN_REGION = "region";
 
 
     public DBHandler(@Nullable Context context) {
@@ -57,7 +58,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 + COLUMN_SIZE + " INTEGER, "
                 + COLUMN_COLOR + " TEXT,"
                 + COLUMN_IMAGE + " TEXT,"
-                + COLUMN_SOLD + " INTEGER DEFAULT 0"
+                + COLUMN_SOLD + " INTEGER DEFAULT 0,"
+                + COLUMN_TYPE + " TEXT DEFAULT ''"
                 + " );" ;
         sqLiteDatabase.execSQL(query);
 
@@ -83,10 +85,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        switch (i1){
-            case 2: sqLiteDatabase.execSQL("ALTER TABLE " + T_PRODUCT + " ADD COLUMN " + COLUMN_TYPE + " TEXT DEFAULT ''");
-                break;
-        }
+        String query = "ALTER TABLE " + T_DEPOT + " ADD COLUMN " + COLUMN_REGION + " TEXT DEFAULT ''";
+        sqLiteDatabase.execSQL(query);
     }
 
     public void addProduct(Product product){
@@ -261,8 +261,8 @@ public class DBHandler extends SQLiteOpenHelper {
             Toast.makeText(context, "Sell updated", Toast.LENGTH_LONG).show();
     }
 
-    public Cursor getAllDepots() {
-        String query = "SELECT id, reference, location FROM " + T_DEPOT + " ORDER BY " + COLUMN_LOCATION ;
+    public Cursor getAllDepots(String reg) {
+        String query = "SELECT id, reference, location, region FROM " + T_DEPOT + " WHERE region = '" + reg + "' ORDER BY " + COLUMN_LOCATION ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -340,8 +340,8 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void ignoreThis(String i) {
-        String query = "UPDATE product SET type = 'Sandal-Soirée' WHERE name = 'HS-" + i + "'" ;
+    public void ignoreThis() {
+        String query = "UPDATE depot SET region = 'Walid' WHERE location LIKE 'CB%' OR location LIKE 'CA%'" ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);
