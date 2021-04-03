@@ -28,11 +28,8 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
     ArrayList<Depot> depots;
     private DBHandler dbHandler;
 
-    private Animation animation;
 
-
-
-    public DepotAdapter(Context context, Activity activity, ArrayList depots){
+    public DepotAdapter(Context context, Activity activity, ArrayList<Depot> depots){
         this.context = context;
         this.depots = depots;
         this.activity = activity;
@@ -59,6 +56,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
                 intent.putExtra("id", String.valueOf(depots.get(position).get_id()));
                 intent.putExtra("reference", String.valueOf(depots.get(position).get_reference()));
                 intent.putExtra("position", String.valueOf(depots.get(position).get_location()));
+                intent.putExtra("region", String.valueOf(depots.get(position).get_region()));
                 activity.startActivityForResult(intent, 1);
             }
         });
@@ -95,7 +93,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
             layout = itemView.findViewById(R.id.mainLayout);
             referenceTV = itemView.findViewById(R.id.referenceTV);
             locationTV = itemView.findViewById(R.id.locationTV);
-            animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             layout.setAnimation(animation);
 
         }

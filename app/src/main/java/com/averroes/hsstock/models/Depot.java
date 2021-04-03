@@ -19,9 +19,10 @@ public class Depot {
         this._region = region;
     }
 
-    public Depot(String _reference, String _location) {
+    public Depot(String _reference, String _location, String _region) {
         this._reference = _reference;
         this._location = _location;
+        this._region = _region;
     }
 
     public int get_id() {

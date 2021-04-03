@@ -101,7 +101,7 @@ public class UpdateDepotActivity extends AppCompatActivity {
                 Integer.parseInt(getIntent().getStringExtra("id")),
                 referenceText,
                 positionText,
-                ""
+                getIntent().getStringExtra("region")
         );
 
         return dbHandler.updateDepot(depot);

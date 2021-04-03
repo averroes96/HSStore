@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -12,11 +11,13 @@ import androidx.annotation.Nullable;
 import com.averroes.hsstock.models.Depot;
 import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.models.Sell;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-public class DBHandler extends SQLiteOpenHelper {
+
+public class DBHandler extends SQLiteAssetHelper {
 
     private Context context;
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 1;
     private static String DB_NAME = "Product.db";
     public static final String T_PRODUCT = "product";
     public static final String COLUMN_ID = "id";
@@ -38,55 +39,10 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_REGION = "region";
 
 
+
     public DBHandler(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
-    }
-
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onCreate(db);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-        String query = "CREATE TABLE IF NOT EXISTS " + T_PRODUCT
-                + " ( "
-                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_NAME + " TEXT, "
-                + COLUMN_SIZE + " INTEGER, "
-                + COLUMN_COLOR + " TEXT,"
-                + COLUMN_IMAGE + " TEXT,"
-                + COLUMN_SOLD + " INTEGER DEFAULT 0,"
-                + COLUMN_TYPE + " TEXT DEFAULT ''"
-                + " );" ;
-        sqLiteDatabase.execSQL(query);
-
-        query = "CREATE TABLE IF NOT EXISTS " + T_SELL
-                + " ( "
-                + COLUMN_SELL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_DATE + " DATETIME, "
-                + COLUMN_PRICE + " INTEGER, "
-                + COLUMN_PRODUCT_ID + " INTEGER, "
-                + "FOREIGN KEY(" + COLUMN_PRODUCT_ID + ") REFERENCES " + T_PRODUCT + "(" + COLUMN_ID + ")"
-                + " );" ;
-        sqLiteDatabase.execSQL(query);
-
-        query = "CREATE TABLE IF NOT EXISTS " + T_DEPOT
-                + " ( "
-                + COLUMN_DEPOT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_REF + " TEXT, "
-                + COLUMN_LOCATION + " INTEGER"
-                + " );" ;
-        sqLiteDatabase.execSQL(query);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        String query = "ALTER TABLE " + T_DEPOT + " ADD COLUMN " + COLUMN_REGION + " TEXT DEFAULT ''";
-        sqLiteDatabase.execSQL(query);
     }
 
     public void addProduct(Product product){
@@ -103,8 +59,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
 
         if(res == -1)
-            Toast.makeText(context, "Erreur de base de données lors de l\'ajout du produit", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(context, "Erreur de base de données lors de l'ajout du produit", Toast.LENGTH_LONG).show();
     }
 
     public void addSell(Sell sell){
@@ -263,7 +218,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public Cursor getAllDepots(String reg) {
         String query = "SELECT id, reference, location, region FROM " + T_DEPOT + " WHERE region = '" + reg + "' ORDER BY " + COLUMN_LOCATION ;
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor cursor = null;
 
         if(sqLiteDatabase != null){
@@ -278,6 +233,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_REF, depot.get_reference());
         values.put(COLUMN_LOCATION, depot.get_location());
+        values.put(COLUMN_REGION, depot.get_region());
         SQLiteDatabase db = this.getWritableDatabase();
         long res = db.insert(T_DEPOT, null, values);
 
@@ -322,7 +278,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        long res = db.delete(T_DEPOT, "reference = ? AND location = ?", new String[]{depot.get_reference(), depot.get_location()});
+        long res = db.delete(T_DEPOT, "reference = ? AND location = ? AND region = ?", new String[]{depot.get_reference(), depot.get_location(), depot.get_region()});
         if(res == -1)
             Toast.makeText(context, "Erreur de base de données lors de suppression d'achat", Toast.LENGTH_LONG).show();
 
@@ -341,7 +297,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void ignoreThis() {
-        String query = "UPDATE depot SET region = 'Walid' WHERE location LIKE 'CB%' OR location LIKE 'CA%'" ;
+        String query = "UPDATE depot SET region = 'Centre' WHERE region = ''" ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);

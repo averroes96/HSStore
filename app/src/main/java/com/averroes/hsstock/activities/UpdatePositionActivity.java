@@ -3,7 +3,9 @@ package com.averroes.hsstock.activities;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -92,11 +94,15 @@ public class UpdatePositionActivity extends AppCompatActivity {
 
     private void deletePosition() {
 
+        SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
+
         for(String ref : initialRefs) {
             dbHandler.removeDepot(
                     new Depot(
                             ref,
-                            initialPosition
+                            initialPosition,
+                            regionText
                     )
             );
         }
@@ -124,6 +130,8 @@ public class UpdatePositionActivity extends AppCompatActivity {
 
         positionText = positionET.getText().toString().trim();
         references = Arrays.asList(referencesET.getText().toString().trim().split(","));
+        SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
 
         if(references.isEmpty()){
             Toast.makeText(this, R.string.enter_refs, Toast.LENGTH_LONG).show();
@@ -136,7 +144,8 @@ public class UpdatePositionActivity extends AppCompatActivity {
             dbHandler.addDepot(
                     new Depot(
                             ref,
-                            positionText
+                            positionText,
+                            regionText
                     )
             );
         }

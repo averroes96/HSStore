@@ -2,6 +2,8 @@ package com.averroes.hsstock.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +24,7 @@ public class AddDepotActivity extends AppCompatActivity {
     private EditText referenceET,positionET;
     private Button addBtn;
 
-    private String positionText;
-    private String referenceText;
-
     private DBHandler dbHandler;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +54,12 @@ public class AddDepotActivity extends AppCompatActivity {
     }
 
     private void addDepot() {
-        positionText = positionET.getText().toString().trim();
-        referenceText = referenceET.getText().toString().trim();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
+
+        String positionText = positionET.getText().toString().trim();
+        String referenceText = referenceET.getText().toString().trim();
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
 
         if(referenceText.isEmpty()){
             Toast.makeText(this, getString(R.string.enter_ref), Toast.LENGTH_LONG).show();
@@ -77,7 +79,8 @@ public class AddDepotActivity extends AppCompatActivity {
         dbHandler.addDepot(
             new Depot(
                     referenceText,
-                    positionText
+                    positionText,
+                    regionText
             )
         );
 

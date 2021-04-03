@@ -3,6 +3,8 @@ package com.averroes.hsstock.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,9 +27,6 @@ public class AddPositionActivity extends AppCompatActivity {
     private ImageButton backBtn;
     private EditText referencesET,positionET;
     private Button addBtn;
-
-    private String positionText;
-    private List<String> references;
 
     private DBHandler dbHandler;
 
@@ -60,8 +59,11 @@ public class AddPositionActivity extends AppCompatActivity {
 
     private void addPosition() {
 
-        positionText = positionET.getText().toString().trim();
-        references = Arrays.asList(referencesET.getText().toString().trim().split(","));
+        SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
+
+        String positionText = positionET.getText().toString().trim();
+        List<String> references = Arrays.asList(referencesET.getText().toString().trim().split(","));
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
 
         if(references.isEmpty()){
             Toast.makeText(this, "Entrez les references svp !", Toast.LENGTH_LONG).show();
@@ -72,7 +74,8 @@ public class AddPositionActivity extends AppCompatActivity {
             dbHandler.addDepot(
                     new Depot(
                             ref,
-                            positionText
+                            positionText,
+                            regionText
                     )
             );
         }
