@@ -62,7 +62,7 @@ public class AddDepotActivity extends AppCompatActivity {
         String positionText = positionET.getText().toString().trim();
         String referenceText = referenceET.getText().toString().trim();
         String priceText = priceET.getText().toString().trim();
-        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         if(referenceText.isEmpty()){
             Toast.makeText(this, getString(R.string.enter_ref), Toast.LENGTH_LONG).show();

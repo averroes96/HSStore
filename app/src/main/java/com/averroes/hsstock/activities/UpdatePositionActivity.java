@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,12 +96,14 @@ public class UpdatePositionActivity extends AppCompatActivity {
     private void deletePosition() {
 
         SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
-        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         for(String ref : initialRefs) {
+            String realRef = ref.split(":")[0].trim();
+            Toast.makeText(this, realRef, Toast.LENGTH_SHORT).show();
             dbHandler.removeDepot(
                     new Depot(
-                            ref,
+                            realRef,
                             initialPosition,
                             regionText
                     )
@@ -111,7 +114,7 @@ public class UpdatePositionActivity extends AppCompatActivity {
 
     private void getIntentData() {
         if(getIntent().hasExtra("name") && getIntent().hasExtra("references")){
-            initialRefs = Arrays.asList(getIntent().getStringExtra("references").split(","));
+            initialRefs = Arrays.asList(getIntent().getStringExtra("references").split("\n"));
             initialPosition = getIntent().getStringExtra("name");
             referencesET.setText(getIntent().getStringExtra("references"));
             positionET.setText(getIntent().getStringExtra("name"));
@@ -129,25 +132,58 @@ public class UpdatePositionActivity extends AppCompatActivity {
     private void updatePosition() {
 
         positionText = positionET.getText().toString().trim();
-        references = Arrays.asList(referencesET.getText().toString().trim().split(","));
+        references = Arrays.asList(referencesET.getText().toString().trim().split("\n"));
         SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
-        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         if(references.isEmpty()){
             Toast.makeText(this, R.string.enter_refs, Toast.LENGTH_LONG).show();
             return;
         }
 
+        for (String ref : references){
+            String[] refAndPrice = ref.split(":");
+            if (refAndPrice.length == 2) {
+                String price = refAndPrice[1].trim();
+                if(!TextUtils.isDigitsOnly(price)){
+                    Toast.makeText(this, "Les prix doivent être composés uniquement de chiffres! " + price, Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+            else if (refAndPrice.length > 2){
+                Toast.makeText(this, "Erreur de syntaxe!", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+
         deletePosition();
 
         for(String ref : references) {
-            dbHandler.addDepot(
-                    new Depot(
-                            ref,
-                            positionText,
-                            regionText
-                    )
-            );
+            if (!ref.trim().isEmpty()) {
+                String[] refAndPrice = ref.split(":");
+
+                if (refAndPrice.length == 1)
+                    dbHandler.addDepot(
+                            new Depot(
+                                    ref,
+                                    positionText,
+                                    regionText
+                            )
+                    );
+                if (refAndPrice.length == 2) {
+                    String reference = refAndPrice[0];
+                    String price = refAndPrice[1];
+                    if(TextUtils.isDigitsOnly(price))
+                        dbHandler.addDepot(
+                                new Depot(
+                                        reference,
+                                        positionText,
+                                        regionText,
+                                        price
+                                )
+                        );
+                }
+            }
         }
 
         Toast.makeText(this, R.string.position_updated, Toast.LENGTH_LONG).show();

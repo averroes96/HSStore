@@ -63,7 +63,7 @@ public class AddPositionActivity extends AppCompatActivity {
 
         String positionText = positionET.getText().toString().trim();
         List<String> references = Arrays.asList(referencesET.getText().toString().trim().split("\n"));
-        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
+        String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         if(references.isEmpty()){
             Toast.makeText(this, "Entrez les references svp !", Toast.LENGTH_LONG).show();
@@ -79,7 +79,7 @@ public class AddPositionActivity extends AppCompatActivity {
                     return;
                 }
             }
-            else {
+            else if (refAndPrice.length > 2) {
                 Toast.makeText(this, "Erreur de syntaxe!", Toast.LENGTH_LONG).show();
                 return;
             }

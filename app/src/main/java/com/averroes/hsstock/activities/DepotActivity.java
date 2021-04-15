@@ -228,7 +228,7 @@ public class DepotActivity extends AppCompatActivity {
             if(sharedPreferences.contains("selected_region"))
                 cursor = dbHandler.getAllDepots(sharedPreferences.getString("selected_region", ""));
             else
-                cursor = dbHandler.getAllDepots("Centre");
+                cursor = dbHandler.getAllDepots("CENTRE");
 
         if(cursor != null){
 
