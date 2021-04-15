@@ -37,6 +37,7 @@ public class DBHandler extends SQLiteAssetHelper {
     public static final String COLUMN_LOCATION = "location";
     private static final String COLUMN_TYPE = "type";
     private static final String COLUMN_REGION = "region";
+    private static final String COLUMN_DEPOT_PRICE = "price";
 
 
 
@@ -217,7 +218,7 @@ public class DBHandler extends SQLiteAssetHelper {
     }
 
     public Cursor getAllDepots(String reg) {
-        String query = "SELECT id, reference, location, region FROM " + T_DEPOT + " WHERE region = '" + reg + "' ORDER BY " + COLUMN_LOCATION ;
+        String query = "SELECT id, reference, location, region, price FROM " + T_DEPOT + " WHERE region = '" + reg + "' ORDER BY " + COLUMN_LOCATION ;
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor cursor = null;
 
@@ -234,6 +235,7 @@ public class DBHandler extends SQLiteAssetHelper {
         values.put(COLUMN_REF, depot.get_reference());
         values.put(COLUMN_LOCATION, depot.get_location());
         values.put(COLUMN_REGION, depot.get_region());
+        values.put(COLUMN_DEPOT_PRICE, depot.get_price());
         SQLiteDatabase db = this.getWritableDatabase();
         long res = db.insert(T_DEPOT, null, values);
 
@@ -249,6 +251,8 @@ public class DBHandler extends SQLiteAssetHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_REF, depot.get_reference());
         values.put(COLUMN_LOCATION, depot.get_location());
+        values.put(COLUMN_REGION, depot.get_region());
+        values.put(COLUMN_DEPOT_PRICE, depot.get_price());
 
         SQLiteDatabase db = this.getWritableDatabase();
         long res = db.update(T_DEPOT, values, "id = ?", new String[]{String.valueOf(depot.get_id())});
@@ -297,14 +301,14 @@ public class DBHandler extends SQLiteAssetHelper {
     }
 
     public void ignoreThis() {
-        String query = "UPDATE depot SET region = 'Centre' WHERE region = ''" ;
+        String query = "UPDATE depot SET region = 'Walid' WHERE location LIKE 'CA%' or location LIKE 'CB%'" ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         sqLiteDatabase.execSQL(query);
     }
 
     public Cursor getPositionRefs(String name) {
-        String query = "SELECT reference FROM " + T_DEPOT + " WHERE location = ?" ;
+        String query = "SELECT reference, price FROM " + T_DEPOT + " WHERE location = ?" ;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
 

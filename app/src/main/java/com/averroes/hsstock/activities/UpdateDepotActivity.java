@@ -19,10 +19,9 @@ import com.averroes.hsstock.models.Depot;
 public class UpdateDepotActivity extends AppCompatActivity {
 
     private ImageButton backBtn,deleteBtn;
-    private EditText referenceET,positionET;
+    private EditText referenceET,positionET,priceET;
     private Button updateBtn;
 
-    private String referenceText,positionText;
     private Depot selectedDepot;
     private DBHandler dbHandler;
 
@@ -35,6 +34,7 @@ public class UpdateDepotActivity extends AppCompatActivity {
         deleteBtn = findViewById(R.id.deleteBtn);
         referenceET = findViewById(R.id.referenceET);
         positionET = findViewById(R.id.positionET);
+        priceET = findViewById(R.id.priceET);
         updateBtn = findViewById(R.id.updateBtn);
 
         dbHandler = new DBHandler(this);
@@ -72,11 +72,13 @@ public class UpdateDepotActivity extends AppCompatActivity {
                     Integer.parseInt(getIntent().getStringExtra("id")),
                     getIntent().getStringExtra("reference"),
                     getIntent().getStringExtra("position"),
-                    ""
+                    getIntent().getStringExtra("region"),
+                    getIntent().getStringExtra("price")
             );
 
             referenceET.setText(selectedDepot.get_reference());
             positionET.setText(String.valueOf(selectedDepot.get_location()));
+            priceET.setText(String.valueOf(selectedDepot.get_price()));
 
         }
         else{
@@ -85,8 +87,9 @@ public class UpdateDepotActivity extends AppCompatActivity {
     }
 
     private boolean updateDepot() {
-        referenceText = referenceET.getText().toString().trim();
-        positionText = positionET.getText().toString().trim();
+        String referenceText = referenceET.getText().toString().trim();
+        String positionText = positionET.getText().toString().trim();
+        String priceText = priceET.getText().toString().trim();
 
         if(TextUtils.isEmpty(referenceText)){
             Toast.makeText(this, "Entrez la référence du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
@@ -96,12 +99,17 @@ public class UpdateDepotActivity extends AppCompatActivity {
             Toast.makeText(this, "Entrez la position du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
             return false;
         }
+        if(!TextUtils.isEmpty(priceText) && !TextUtils.isDigitsOnly(priceText)){
+            Toast.makeText(this, "Entrez le prix du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         Depot depot = new Depot(
                 Integer.parseInt(getIntent().getStringExtra("id")),
                 referenceText,
                 positionText,
-                getIntent().getStringExtra("region")
+                getIntent().getStringExtra("region"),
+                priceText
         );
 
         return dbHandler.updateDepot(depot);

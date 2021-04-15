@@ -247,7 +247,8 @@ public class DepotActivity extends AppCompatActivity {
                             cursor.getInt(0),
                             cursor.getString(1),
                             cursor.getString(2),
-                            cursor.getString(3)
+                            cursor.getString(3),
+                            cursor.getString(4)
                     );
 
                     depots.add(depot);

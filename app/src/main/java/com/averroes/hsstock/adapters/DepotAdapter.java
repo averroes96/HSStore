@@ -49,6 +49,10 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.referenceTV.setText(String.valueOf(depots.get(position).get_reference()));
         holder.locationTV.setText(String.valueOf(depots.get(position).get_location()));
+        if(depots.get(position).get_price() == null || depots.get(position).get_price().isEmpty())
+            holder.priceTV.setText("Non défini");
+        else
+            holder.priceTV.setText(depots.get(position).get_price());
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +61,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
                 intent.putExtra("reference", String.valueOf(depots.get(position).get_reference()));
                 intent.putExtra("position", String.valueOf(depots.get(position).get_location()));
                 intent.putExtra("region", String.valueOf(depots.get(position).get_region()));
+                intent.putExtra("price", String.valueOf(depots.get(position).get_price() == null? "" : depots.get(position).get_price()));
                 activity.startActivityForResult(intent, 1);
             }
         });
@@ -85,7 +90,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView referenceTV,locationTV;
+        private TextView referenceTV,locationTV,priceTV;
         private LinearLayout layout;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -93,6 +98,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
             layout = itemView.findViewById(R.id.mainLayout);
             referenceTV = itemView.findViewById(R.id.referenceTV);
             locationTV = itemView.findViewById(R.id.locationTV);
+            priceTV = itemView.findViewById(R.id.priceTV);
             Animation animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             layout.setAnimation(animation);
 

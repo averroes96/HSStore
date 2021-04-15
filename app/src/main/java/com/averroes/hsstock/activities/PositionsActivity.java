@@ -117,7 +117,8 @@ public class PositionsActivity extends AppCompatActivity {
 
                     Cursor cr = dbHandler.getPositionRefs(position.get_name());
                     while ((cr.moveToNext())){
-                        position.set_refs(position.get_refs().concat(cr.getString(0) + ","));
+                        String price = cr.getString(1) != null ? " : " + cr.getString(1) : "";
+                        position.set_refs(position.get_refs().concat(cr.getString(0) + price + "\n"));
                         position.set_num_refs(position.get_num_refs() + 1);
                     }
 

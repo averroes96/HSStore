@@ -8,7 +8,7 @@
     <string name="update">Sauvegarder</string>
     <string name="delete">Supprimer</string>
     <string name="price">Prix</string>
-    <string name="references">References (séparer par virgule)</string>
+    <string name="references">Reference : Prix</string>
     <string name="position">Position</string>
     <string name="filter_criteria">Filtrage par rapport :</string>
     <string name="store">Depot</string>
@@ -57,9 +57,9 @@
         <item name="adidas_kids">Adidas-Enfant</item>
     </string-array>
     <string-array name="regions">
-        <item name="centre">Centre</item>
-        <item name="rekad">Rekad</item>
-        <item name="walid">Walid</item>
+        <item name="centre">CENTRE</item>
+        <item name="rekad">REKAD</item>
+        <item name="walid">WALID</item>
     </string-array>
     <string-array name="sizes">
         <item>15</item>

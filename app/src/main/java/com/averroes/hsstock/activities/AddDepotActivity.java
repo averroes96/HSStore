@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,7 @@ import java.util.List;
 public class AddDepotActivity extends AppCompatActivity {
 
     private ImageButton backBtn;
-    private EditText referenceET,positionET;
+    private EditText referenceET,positionET,priceET;
     private Button addBtn;
 
     private DBHandler dbHandler;
@@ -34,6 +35,7 @@ public class AddDepotActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         referenceET = findViewById(R.id.referenceET);
         positionET = findViewById(R.id.positionET);
+        priceET = findViewById(R.id.priceET);
         addBtn = findViewById(R.id.addBtn);
 
         dbHandler = new DBHandler(this);
@@ -59,6 +61,7 @@ public class AddDepotActivity extends AppCompatActivity {
 
         String positionText = positionET.getText().toString().trim();
         String referenceText = referenceET.getText().toString().trim();
+        String priceText = priceET.getText().toString().trim();
         String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "Centre";
 
         if(referenceText.isEmpty()){
@@ -76,11 +79,17 @@ public class AddDepotActivity extends AppCompatActivity {
             return;
         }
 
+        if(!TextUtils.isEmpty(priceText) && !TextUtils.isDigitsOnly(priceText)){
+            Toast.makeText(this, "Entrez un prix du chaussure valide s'il vous plaît", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         dbHandler.addDepot(
             new Depot(
                     referenceText,
                     positionText,
-                    regionText
+                    regionText,
+                    priceText
             )
         );
 
