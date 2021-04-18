@@ -51,6 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:drawablePadding="5dp"
+                        android:textColor="@color/colorPrimary"
                         android:text="@string/reference"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -93,11 +94,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:alpha="0.80"
                         android:background="@drawable/cornered_shape"
                         android:padding="8sp"
                         android:text="@string/type"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
                         android:textStyle="bold|italic" />
 

@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filtering"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorAccent"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -112,6 +112,7 @@
                 android:layout_marginBottom="32sp"
                 android:background="@color/colorPrimary"
                 android:minWidth="128dp"
+                android:textColor="@color/colorAccent"
                 android:text="@string/filter" />
 
         </LinearLayout>

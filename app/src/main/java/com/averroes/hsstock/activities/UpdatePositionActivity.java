@@ -100,7 +100,6 @@ public class UpdatePositionActivity extends AppCompatActivity {
 
         for(String ref : initialRefs) {
             String realRef = ref.split(":")[0].trim();
-            Toast.makeText(this, realRef, Toast.LENGTH_SHORT).show();
             dbHandler.removeDepot(
                     new Depot(
                             realRef,
@@ -171,8 +170,8 @@ public class UpdatePositionActivity extends AppCompatActivity {
                             )
                     );
                 if (refAndPrice.length == 2) {
-                    String reference = refAndPrice[0];
-                    String price = refAndPrice[1];
+                    String reference = refAndPrice[0].trim();
+                    String price = refAndPrice[1].trim();
                     if(TextUtils.isDigitsOnly(price))
                         dbHandler.addDepot(
                                 new Depot(
