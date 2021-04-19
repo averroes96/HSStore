@@ -3,6 +3,7 @@ package com.averroes.hsstock.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,13 +33,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
-public class DepotActivity extends AppCompatActivity {
+public class DepotActivity extends Commons {
 
     private ImageButton backBtn,addLocationBtn,positionsBtn,regionsBtn;
     private EditText searchET;
     private RecyclerView locationsRV;
     private ImageView empty;
     private TextView nodata,countTV,duplicateTV,filterTV;
+    private ConstraintLayout mainLayout;
 
     private ArrayList<Depot> depots;
     private DBHandler dbHandler;
@@ -60,6 +62,7 @@ public class DepotActivity extends AppCompatActivity {
         filterTV = findViewById(R.id.filterTV);
         positionsBtn = findViewById(R.id.positionsBtn);
         regionsBtn = findViewById(R.id.regionsBtn);
+        mainLayout = findViewById(R.id.mainLayout);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();
@@ -256,7 +259,7 @@ public class DepotActivity extends AppCompatActivity {
             }
         }
         else
-            Toast.makeText(this, "Erreur de la base de données", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "Erreur de la base de données");
     }
 
     private void filter(String text) {

@@ -3,9 +3,11 @@ package com.averroes.hsstock.inc;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +25,22 @@ public class Commons extends AppCompatActivity {
 
                     }
                 });
-        snackbar.setActionTextColor(getResources().getColor(R.color.colorPrimary));
+        snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
+        TextView snackTextView = (TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        snackTextView.setMaxLines(3);
+        snackbar.show();
+    }
+
+    public void showSnackBarMessage(View view, String res){
+        Snackbar snackbar = Snackbar.make(view, res, Snackbar.LENGTH_LONG);
+        snackbar.setAction(
+                getString(R.string.close), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+        snackbar.setActionTextColor(getResources().getColor(R.color.colorAccent));
         TextView snackTextView = (TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
         snackTextView.setMaxLines(3);
         snackbar.show();
@@ -105,5 +122,10 @@ public class Commons extends AppCompatActivity {
 
         return size <= 45 && size >= 15;
 
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 }

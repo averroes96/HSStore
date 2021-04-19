@@ -144,8 +144,8 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
         colorsAndSizes = Arrays.asList(colorsAndSizesET.getText().toString().trim().split("\n"));
 
         if(colorsAndSizes.size() == 0){
-                Toast.makeText(this, getString(R.string.enter_colors_sizes), Toast.LENGTH_LONG).show();
-                return;
+            showSnackBarMessage(mainLayout, R.string.enter_colors_sizes);
+            return;
         }
 
         for (String str : colorsAndSizes) {
@@ -289,7 +289,7 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
                     if(cameraResult && storageResult){
                         pickFromCamera();
                     }else{
-                        Toast.makeText(this, "Camera and storage permission are needed", Toast.LENGTH_LONG).show();
+                        showSnackBarMessage(mainLayout, "Camera and storage permission are needed");
                     }
                 }
             } break;
@@ -299,7 +299,7 @@ public class AddProductActivity extends Commons implements CameraMethods, Storag
                     if(locationResult){
                         pickFromGallery();
                     }else{
-                        Toast.makeText(this, "Storage permission is needed", Toast.LENGTH_LONG).show();
+                        showSnackBarMessage(mainLayout, "Storage permission is needed");
                     }
                 }
             } break;

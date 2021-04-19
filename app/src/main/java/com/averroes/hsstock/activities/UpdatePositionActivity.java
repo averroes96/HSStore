@@ -2,6 +2,7 @@ package com.averroes.hsstock.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,17 +17,19 @@ import android.widget.Toast;
 
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.database.DBHandler;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
 import com.averroes.hsstock.models.Position;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class UpdatePositionActivity extends AppCompatActivity {
+public class UpdatePositionActivity extends Commons {
 
     private ImageButton backBtn,deleteBtn;
     private EditText referencesET,positionET;
     private Button editBtn;
+    private ConstraintLayout mainLayout;
 
     private String positionText,initialPosition;
     private List<String> initialRefs,references;
@@ -44,6 +47,7 @@ public class UpdatePositionActivity extends AppCompatActivity {
         positionET = findViewById(R.id.positionET);
         editBtn = findViewById(R.id.editBtn);
         deleteBtn = findViewById(R.id.deleteBtn);
+        mainLayout = findViewById(R.id.mainLayout);
 
         dbHandler = new DBHandler(this);
 
@@ -57,8 +61,8 @@ public class UpdatePositionActivity extends AppCompatActivity {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updatePosition();
-                finish();
+                if(updatePosition())
+                    finish();
             }
         });
 
@@ -99,14 +103,25 @@ public class UpdatePositionActivity extends AppCompatActivity {
         String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         for(String ref : initialRefs) {
-            String realRef = ref.split(":")[0].trim();
-            dbHandler.removeDepot(
-                    new Depot(
-                            realRef,
-                            initialPosition,
-                            regionText
-                    )
-            );
+            if(ref.trim().endsWith(":")) {
+                dbHandler.removeDepot(
+                        new Depot(
+                                ref,
+                                initialPosition,
+                                regionText
+                        )
+                );
+            }
+            else{
+                String realRef = ref.split(":")[0].trim();
+                dbHandler.removeDepot(
+                        new Depot(
+                                realRef,
+                                initialPosition,
+                                regionText
+                        )
+                );
+            }
         }
 
     }
@@ -124,11 +139,11 @@ public class UpdatePositionActivity extends AppCompatActivity {
             );
         }
         else{
-            Toast.makeText(this, "No data !", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "No data!");
         }
     }
 
-    private void updatePosition() {
+    private boolean updatePosition() {
 
         positionText = positionET.getText().toString().trim();
         references = Arrays.asList(referencesET.getText().toString().trim().split("\n"));
@@ -136,8 +151,8 @@ public class UpdatePositionActivity extends AppCompatActivity {
         String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         if(references.isEmpty()){
-            Toast.makeText(this, R.string.enter_refs, Toast.LENGTH_LONG).show();
-            return;
+            showSnackBarMessage(mainLayout, R.string.enter_refs);
+            return false;
         }
 
         for (String ref : references){
@@ -145,13 +160,13 @@ public class UpdatePositionActivity extends AppCompatActivity {
             if (refAndPrice.length == 2) {
                 String price = refAndPrice[1].trim();
                 if(!TextUtils.isDigitsOnly(price)){
-                    Toast.makeText(this, "Les prix doivent être composés uniquement de chiffres! " + price, Toast.LENGTH_LONG).show();
-                    return;
+                    showSnackBarMessage(mainLayout, "Les prix doivent être composés uniquement de chiffres!");
+                    return false;
                 }
             }
             else if (refAndPrice.length > 2){
-                Toast.makeText(this, "Erreur de syntaxe!", Toast.LENGTH_LONG).show();
-                return;
+                showSnackBarMessage(mainLayout, "Erreur de syntaxe!");
+                return false;
             }
         }
 
@@ -186,5 +201,7 @@ public class UpdatePositionActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, R.string.position_updated, Toast.LENGTH_LONG).show();
+
+        return true;
     }
 }

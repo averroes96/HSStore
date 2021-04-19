@@ -1,6 +1,7 @@
 package com.averroes.hsstock.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,16 +15,18 @@ import android.widget.Toast;
 
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.database.DBHandler;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AddDepotActivity extends AppCompatActivity {
+public class AddDepotActivity extends Commons {
 
     private ImageButton backBtn;
     private EditText referenceET,positionET,priceET;
     private Button addBtn;
+    private ConstraintLayout mainLayout;
 
     private DBHandler dbHandler;
 
@@ -37,6 +40,7 @@ public class AddDepotActivity extends AppCompatActivity {
         positionET = findViewById(R.id.positionET);
         priceET = findViewById(R.id.priceET);
         addBtn = findViewById(R.id.addBtn);
+        mainLayout = findViewById(R.id.mainLayout);
 
         dbHandler = new DBHandler(this);
 
@@ -65,22 +69,22 @@ public class AddDepotActivity extends AppCompatActivity {
         String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
         if(referenceText.isEmpty()){
-            Toast.makeText(this, getString(R.string.enter_ref), Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, getString(R.string.enter_ref));
             return;
         }
 
         if(positionText.isEmpty()){
-            Toast.makeText(this, getString(R.string.enter_position), Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, R.string.enter_ref);
             return;
         }
 
         if(referenceText.contains(",")){
-            Toast.makeText(this, getString(R.string.invalid_ref), Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, R.string.invalid_ref);
             return;
         }
 
         if(!TextUtils.isEmpty(priceText) && !TextUtils.isDigitsOnly(priceText)){
-            Toast.makeText(this, "Entrez un prix du chaussure valide s'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "Entrez un prix du chaussure valide s'il vous plaît");
             return;
         }
 
@@ -94,6 +98,8 @@ public class AddDepotActivity extends AppCompatActivity {
         );
 
 
-        Toast.makeText(this, "Positions ajouté(s)", Toast.LENGTH_LONG).show();
+        showSnackBarMessage(mainLayout, "Positions ajouté(s)");
+        referenceET.setText("");
+        positionET.setText("");
     }
 }

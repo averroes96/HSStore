@@ -2,6 +2,7 @@ package com.averroes.hsstock.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,18 +22,20 @@ import com.averroes.hsstock.R;
 import com.averroes.hsstock.adapters.DepotAdapter;
 import com.averroes.hsstock.adapters.PositionAdapter;
 import com.averroes.hsstock.database.DBHandler;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
 import com.averroes.hsstock.models.Position;
 
 import java.util.ArrayList;
 
-public class PositionsActivity extends AppCompatActivity {
+public class PositionsActivity extends Commons {
 
     ImageButton backBtn,addPositionBtn;
     EditText searchET;
     TextView counterTV,nodata;
     RecyclerView positionsRV;
     ImageView empty;
+    private ConstraintLayout mainLayout;
 
     private DBHandler dbHandler;
     private ArrayList<Position> positions;
@@ -50,6 +53,7 @@ public class PositionsActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty);
         nodata = findViewById(R.id.nodata);
         addPositionBtn = findViewById(R.id.addPositionBtn);
+        mainLayout = findViewById(R.id.mainLayout);
 
         dbHandler = new DBHandler(this);
         positions = new ArrayList<>();
@@ -127,7 +131,7 @@ public class PositionsActivity extends AppCompatActivity {
             }
         }
         else
-            Toast.makeText(this, "Erreur de la base de données", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "Erreur de la base de données");
     }
 
     private void filter(String text) {

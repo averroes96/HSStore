@@ -2,6 +2,7 @@ package com.averroes.hsstock.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,13 +15,16 @@ import android.widget.Toast;
 
 import com.averroes.hsstock.R;
 import com.averroes.hsstock.database.DBHandler;
+import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
 
-public class UpdateDepotActivity extends AppCompatActivity {
+public class UpdateDepotActivity extends Commons {
 
     private ImageButton backBtn,deleteBtn;
     private EditText referenceET,positionET,priceET;
     private Button updateBtn;
+    private ConstraintLayout mainLayout;
+
 
     private Depot selectedDepot;
     private DBHandler dbHandler;
@@ -36,6 +40,7 @@ public class UpdateDepotActivity extends AppCompatActivity {
         positionET = findViewById(R.id.positionET);
         priceET = findViewById(R.id.priceET);
         updateBtn = findViewById(R.id.updateBtn);
+        mainLayout = findViewById(R.id.mainLayout);
 
         dbHandler = new DBHandler(this);
 
@@ -57,8 +62,9 @@ public class UpdateDepotActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean res = updateDepot();
-                if(res)
+                if(res) {
                     finish();
+                }
             }
         });
 
@@ -82,7 +88,7 @@ public class UpdateDepotActivity extends AppCompatActivity {
 
         }
         else{
-            Toast.makeText(this, "No data !", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "No data !");
         }
     }
 
@@ -92,15 +98,15 @@ public class UpdateDepotActivity extends AppCompatActivity {
         String priceText = priceET.getText().toString().trim();
 
         if(TextUtils.isEmpty(referenceText)){
-            Toast.makeText(this, "Entrez la référence du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "Entrez la référence du chaussure s'il vous plaît");
             return false;
         }
         if(TextUtils.isEmpty(positionText)){
-            Toast.makeText(this, "Entrez la position du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "Entrez la position du chaussure s'il vous plaît");
             return false;
         }
         if(!TextUtils.isEmpty(priceText) && !TextUtils.isDigitsOnly(priceText)){
-            Toast.makeText(this, "Entrez le prix du chaussure s'il vous plaît", Toast.LENGTH_LONG).show();
+            showSnackBarMessage(mainLayout, "Entrez le prix du chaussure s'il vous plaît");
             return false;
         }
 
@@ -111,6 +117,8 @@ public class UpdateDepotActivity extends AppCompatActivity {
                 getIntent().getStringExtra("region"),
                 priceText
         );
+
+        Toast.makeText(this, R.string.depot_updated, Toast.LENGTH_LONG).show();
 
         return dbHandler.updateDepot(depot);
     }

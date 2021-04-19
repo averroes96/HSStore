@@ -215,5 +215,6 @@
     <string name="confirm">Confirm</string>
     <string name="region">Region</string>
     <string name="region_filtering">Filtrage par region</string>
+    <string name="depot_updated">Depot modifée</string>
 
 </resources>
