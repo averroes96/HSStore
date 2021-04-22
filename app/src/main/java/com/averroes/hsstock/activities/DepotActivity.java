@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +40,9 @@ public class DepotActivity extends Commons {
     private EditText searchET;
     private RecyclerView locationsRV;
     private ImageView empty;
-    private TextView nodata,countTV,duplicateTV,filterTV;
+    private TextView nodata,countTV,duplicateTV,filterTV,suggestionsTV;
     private ConstraintLayout mainLayout;
+    private LinearLayout suggestionsLayout;
 
     private ArrayList<Depot> depots;
     private DBHandler dbHandler;
@@ -63,6 +65,8 @@ public class DepotActivity extends Commons {
         positionsBtn = findViewById(R.id.positionsBtn);
         regionsBtn = findViewById(R.id.regionsBtn);
         mainLayout = findViewById(R.id.mainLayout);
+        suggestionsTV = findViewById(R.id.suggestionsTV);
+        suggestionsLayout = findViewById(R.id.suggestionsLayout);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();
@@ -99,6 +103,7 @@ public class DepotActivity extends Commons {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 filter(charSequence.toString());
+                checkSimilarity(charSequence.toString());
             }
 
             @Override
@@ -131,6 +136,31 @@ public class DepotActivity extends Commons {
 
         countTV.setText(adapter.getItemCount() + " Reference(s)");
         duplicateTV.setText(adapter.getDuplicatesCount() + " duplicate(s)");
+    }
+
+    private void checkSimilarity(String string) {
+
+        String best = "";
+        int globalMinDist = 9999;
+
+        if(adapter.getItemCount() == 0){
+            for(Depot depot : depots){
+                int minDist = editDistDP(string, depot.get_reference(), string.length(), depot.get_reference().length());
+                if(minDist < globalMinDist) {
+                    globalMinDist = minDist;
+                    best = depot.get_reference();
+                }
+            }
+
+            suggestionsLayout.setVisibility(View.VISIBLE);
+            suggestionsTV.setText(best);
+        }
+        else{
+            suggestionsLayout.setVisibility(View.GONE);
+            suggestionsTV.setText("");
+        }
+
+
     }
 
     private void showRegionsDialog() {

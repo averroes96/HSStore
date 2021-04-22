@@ -52,7 +52,7 @@ public class DepotAdapter extends RecyclerView.Adapter<DepotAdapter.MyViewHolder
         if(depots.get(position).get_price() == null || depots.get(position).get_price().isEmpty())
             holder.priceTV.setText("Non défini");
         else
-            holder.priceTV.setText(depots.get(position).get_price());
+            holder.priceTV.setText(depots.get(position).get_price() + " da");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16sp"
             android:gravity="center"
-            android:padding="8dp"
+            android:padding="4dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout">
@@ -123,15 +123,44 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/suggestionsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchLayout"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:padding="8dp"
+                android:text="Vouliez-vous dire:"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/suggestionsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="Suggestions"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/statsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16sp"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:padding="8dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchLayout">
+            app:layout_constraintTop_toBottomOf="@id/suggestionsLayout">
 
             <TextView
                 android:id="@+id/countTV"
@@ -162,10 +191,11 @@
             android:id="@+id/locationsRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16sp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statsLayout"
             app:layout_constraintVertical_bias="1.0"

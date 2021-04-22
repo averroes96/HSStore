@@ -37,11 +37,12 @@
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_location_grey"
-                android:drawablePadding="5dp"
+                android:drawablePadding="4dp"
                 android:text="TextView"
                 android:textColor="#7A000000"
                 android:textSize="20sp"
                 android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/referenceTV" />
 
@@ -49,7 +50,6 @@
                 android:id="@+id/priceTV"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
                 android:drawableStart="@drawable/ic_price_accent"
                 android:drawablePadding="4dp"
                 android:fontFamily="monospace"
@@ -59,8 +59,8 @@
                 android:textSize="16sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/locationTV"
+                app:layout_constraintTop_toBottomOf="@+id/referenceTV" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
