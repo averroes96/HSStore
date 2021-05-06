@@ -92,12 +92,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout">
 
+
             <EditText
                 android:id="@+id/searchET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:background="@drawable/shape_rectangle"
                 android:drawableStart="@drawable/ic_search_grey"
                 android:ems="10"
@@ -105,19 +106,14 @@
                 android:inputType="textPersonName"
                 android:padding="16dp" />
 
-            <TextView
-                android:id="@+id/filterTV"
+            <ImageButton
+                android:id="@+id/barcodeBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:layout_weight="4"
                 android:ems="10"
-                android:padding="16dp"
-                android:text="@string/type"
-                android:layout_weight="3"
-                android:textAlignment="center"
-                android:layout_marginStart="8dp"
-                android:layout_gravity="center"
-                android:background="@drawable/shape_rectangle"
-                app:drawableEndCompat="@drawable/ic_arrow_down_grey" />
+                app:srcCompat="@drawable/ic_barcode_primary" />
 
 
         </LinearLayout>

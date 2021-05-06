@@ -31,16 +31,18 @@ import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
 public class DepotActivity extends Commons {
 
-    private ImageButton backBtn,addLocationBtn,positionsBtn,regionsBtn;
+    private ImageButton backBtn,addLocationBtn,positionsBtn,regionsBtn,barcodeBtn;
     private EditText searchET;
     private RecyclerView locationsRV;
     private ImageView empty;
-    private TextView nodata,countTV,duplicateTV,filterTV,suggestionsTV;
+    private TextView nodata,countTV,duplicateTV,/*filterTV,*/suggestionsTV;
     private ConstraintLayout mainLayout;
     private LinearLayout suggestionsLayout;
 
@@ -61,12 +63,13 @@ public class DepotActivity extends Commons {
         nodata = findViewById(R.id.nodata);
         countTV =  findViewById(R.id.countTV);
         duplicateTV = findViewById(R.id.duplicateTV);
-        filterTV = findViewById(R.id.filterTV);
+        //filterTV = findViewById(R.id.filterTV);
         positionsBtn = findViewById(R.id.positionsBtn);
         regionsBtn = findViewById(R.id.regionsBtn);
         mainLayout = findViewById(R.id.mainLayout);
         suggestionsTV = findViewById(R.id.suggestionsTV);
         suggestionsLayout = findViewById(R.id.suggestionsLayout);
+        barcodeBtn = findViewById(R.id.barcodeBtn);
 
         dbHandler = new DBHandler(this);
         depots = new ArrayList<>();
@@ -119,13 +122,37 @@ public class DepotActivity extends Commons {
             }
         }));
         
-        filterTV.setOnClickListener(new View.OnClickListener() {
+        /*filterTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFilterDialog();
             }
         });
-        filterTV.setText(getResources().getStringArray(R.array.filter_types)[0]);
+        filterTV.setText(getResources().getStringArray(R.array.filter_types)[0]);*/
+        
+        barcodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanCode();
+            }
+        });
+
+        suggestionsTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchET.setText(suggestionsTV.getText());
+                suggestionsLayout.setVisibility(View.GONE);
+                suggestionsTV.setText("");
+            }
+        });
+
+        searchET.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                scanCode();
+                return true;
+            }
+        });
 
         getData("");
 
@@ -136,6 +163,16 @@ public class DepotActivity extends Commons {
 
         countTV.setText(adapter.getItemCount() + " Reference(s)");
         duplicateTV.setText(adapter.getDuplicatesCount() + " duplicate(s)");
+    }
+
+    private void scanCode() {
+
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setCaptureActivity(CaptureActivity.class);
+        integrator.setOrientationLocked(false);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scanning code...");
+        integrator.initiateScan();
     }
 
     private void checkSimilarity(String string) {
@@ -236,7 +273,7 @@ public class DepotActivity extends Commons {
                 .create().show();
     }
 
-    private void openFilterDialog() {
+    /*private void openFilterDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.filter_criteria))
@@ -249,7 +286,7 @@ public class DepotActivity extends Commons {
                     }
                 })
                 .create().show();
-    }
+    }*/
 
     private void getData(String region) {
 
@@ -296,16 +333,14 @@ public class DepotActivity extends Commons {
         ArrayList<Depot> filteredList = new ArrayList<>();
 
         for (Depot depot : depots) {
-            if(filterTV.getText().equals(getResources().getStringArray(R.array.filter_types)[0])) {
-                if (depot.get_reference().toLowerCase().trim().contains(text.toLowerCase())) {
-                    filteredList.add(depot);
-                }
+            //if(filterTV.getText().equals(getResources().getStringArray(R.array.filter_types)[0])) {
+            if (depot.get_reference().toLowerCase().trim().contains(text.toLowerCase())) {
+                filteredList.add(depot);
             }
-            else{
-                if (depot.get_location().toLowerCase().trim().equals(text.toLowerCase())) {
-                    filteredList.add(depot);
-                }
-            }
+            //}
+            /*if (depot.get_location().toLowerCase().trim().equals(text.toLowerCase())) {
+                filteredList.add(depot);
+            }*/
         }
 
         adapter.filteredList(filteredList);
@@ -327,6 +362,14 @@ public class DepotActivity extends Commons {
 
         if(requestCode == 1 || requestCode == 2 || requestCode == 3){
             recreate();
+        }
+        else {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode, data);
+            if(result != null){
+                if(result.getContents() != null){
+                    searchET.setText(result.getContents());
+                }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
