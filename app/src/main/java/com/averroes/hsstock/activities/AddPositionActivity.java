@@ -2,6 +2,7 @@ package com.averroes.hsstock.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
@@ -20,6 +21,7 @@ import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
 import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.models.Sell;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +29,11 @@ import java.util.List;
 public class AddPositionActivity extends Commons {
 
     private ImageButton backBtn;
+    private FloatingActionButton addNewLocation;
     private EditText referencesET,positionET;
     private Button addBtn;
     private ConstraintLayout mainLayout;
+    private RecyclerView locationsRV;
 
     private DBHandler dbHandler;
 
@@ -43,6 +47,8 @@ public class AddPositionActivity extends Commons {
         positionET = findViewById(R.id.positionET);
         addBtn = findViewById(R.id.addBtn);
         mainLayout = findViewById(R.id.mainLayout);
+        addNewLocation = findViewById(R.id.addNewLocation);
+        locationsRV = findViewById(R.id.locationsRV);
 
         dbHandler = new DBHandler(this);
         
