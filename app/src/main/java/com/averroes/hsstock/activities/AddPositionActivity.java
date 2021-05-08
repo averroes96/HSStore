@@ -2,6 +2,7 @@ package com.averroes.hsstock.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -16,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.averroes.hsstock.R;
+import com.averroes.hsstock.adapters.DepotAdapter;
+import com.averroes.hsstock.adapters.LocationAdapter;
 import com.averroes.hsstock.database.DBHandler;
 import com.averroes.hsstock.inc.Commons;
 import com.averroes.hsstock.models.Depot;
@@ -23,6 +26,7 @@ import com.averroes.hsstock.models.Product;
 import com.averroes.hsstock.models.Sell;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,12 +34,14 @@ public class AddPositionActivity extends Commons {
 
     private ImageButton backBtn;
     private FloatingActionButton addNewLocation;
-    private EditText referencesET,positionET;
+    private EditText positionET;
     private Button addBtn;
     private ConstraintLayout mainLayout;
     private RecyclerView locationsRV;
 
     private DBHandler dbHandler;
+    private ArrayList<Depot> depots;
+    private LocationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,6 @@ public class AddPositionActivity extends Commons {
         setContentView(R.layout.activity_add_position);
         
         backBtn = findViewById(R.id.backBtn);
-        referencesET = findViewById(R.id.referencesET);
         positionET = findViewById(R.id.positionET);
         addBtn = findViewById(R.id.addBtn);
         mainLayout = findViewById(R.id.mainLayout);
@@ -51,6 +56,7 @@ public class AddPositionActivity extends Commons {
         locationsRV = findViewById(R.id.locationsRV);
 
         dbHandler = new DBHandler(this);
+        depots = new ArrayList<>();
         
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +71,12 @@ public class AddPositionActivity extends Commons {
                 addPosition();
             }
         });
+
+        adapter = new LocationAdapter(AddPositionActivity.this, this, depots);
+        locationsRV.setAdapter(adapter);
+        locationsRV.setLayoutManager(new LinearLayoutManager(AddPositionActivity.this));
+        adapter.notifyDataSetChanged();
+
   }
 
     private void addPosition() {
@@ -72,59 +84,10 @@ public class AddPositionActivity extends Commons {
         SharedPreferences sharedPreferences = getSharedPreferences("region_settings", Context.MODE_PRIVATE);
 
         String positionText = positionET.getText().toString().trim();
-        List<String> references = Arrays.asList(referencesET.getText().toString().trim().split("\n"));
         String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
-        if(references.isEmpty()){
-            showSnackBarMessage(mainLayout, "Entrez les references svp !");
-            return;
-        }
-
-        for (String ref : references){
-            String[] refAndPrice = ref.split(":");
-            if (refAndPrice.length == 2) {
-                String price = refAndPrice[1];
-                if(!TextUtils.isDigitsOnly(price)){
-                    showSnackBarMessage(mainLayout, "Les prix doivent être composés uniquement de chiffres!");
-                    return;
-                }
-            }
-            else if (refAndPrice.length > 2) {
-                showSnackBarMessage(mainLayout, "Erreur de syntaxe!");
-                return;
-            }
-        }
-
-        for(String ref : references) {
-            if (!ref.trim().isEmpty()) {
-                String[] refAndPrice = ref.split(":");
-
-                if (refAndPrice.length == 1)
-                    dbHandler.addDepot(
-                            new Depot(
-                                    ref,
-                                    positionText,
-                                    regionText
-                            )
-                    );
-                if (refAndPrice.length == 2) {
-                    String reference = refAndPrice[0];
-                    String price = refAndPrice[1];
-                    if(TextUtils.isDigitsOnly(price))
-                        dbHandler.addDepot(
-                                new Depot(
-                                        reference,
-                                        positionText,
-                                        regionText,
-                                        price
-                                )
-                        );
-                }
-            }
-        }
 
         showSnackBarMessage(mainLayout, "Positions ajouté(s)");
-        referencesET.setText("");
         positionET.setText("");
 
     }
