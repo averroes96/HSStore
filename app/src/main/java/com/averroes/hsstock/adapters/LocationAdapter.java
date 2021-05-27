@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,8 +44,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                depots.remove(position);
+                notifyItemRemoved(position);
+            }
+        });
     }
 
     @Override
@@ -55,6 +62,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private EditText referenceET,priceET;
+        private ImageButton removeBtn;
         private LinearLayout layout;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -62,6 +70,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             layout = itemView.findViewById(R.id.mainLayout);
             referenceET = itemView.findViewById(R.id.referenceET);
             priceET = itemView.findViewById(R.id.priceET);
+            removeBtn = itemView.findViewById(R.id.removeBtn);
             Animation animation = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             layout.setAnimation(animation);
         }

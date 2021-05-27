@@ -72,12 +72,31 @@ public class AddPositionActivity extends Commons {
             }
         });
 
+        addNewLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addLocation();
+            }
+        });
+
         adapter = new LocationAdapter(AddPositionActivity.this, this, depots);
         locationsRV.setAdapter(adapter);
         locationsRV.setLayoutManager(new LinearLayoutManager(AddPositionActivity.this));
         adapter.notifyDataSetChanged();
 
+        Depot depot = new Depot();
+        depots.add(depot);
+        adapter.notifyItemInserted(depots.size() - 1);
+
   }
+
+    private void addLocation() {
+
+        Depot depot = new Depot();
+        depots.add(depot);
+        adapter.notifyItemInserted(depots.size() - 1);
+
+    }
 
     private void addPosition() {
 

@@ -23,7 +23,7 @@
                 android:id="@+id/referenceET"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:padding="16dp"
                 android:background="@drawable/shape_rectangle"
                 android:drawableStart="@drawable/ic_reference_grey"
@@ -41,11 +41,21 @@
                 android:drawableStart="@drawable/ic_price_grey"
                 android:drawablePadding="4dp"
                 android:ems="10"
-                android:layout_weight="1"
+                android:layout_weight="2"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/price"
                 android:inputType="numberDecimal"
                 android:padding="16dp" />
 
+            <ImageButton
+                android:id="@+id/removeBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ems="10"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_remove_primary"
+                android:padding="16dp"/>
         </LinearLayout>
 
 
