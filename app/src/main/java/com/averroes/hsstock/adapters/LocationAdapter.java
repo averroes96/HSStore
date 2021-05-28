@@ -3,6 +3,8 @@ package com.averroes.hsstock.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
 
     private Context context;
     private Activity activity;
-    ArrayList<Depot> depots;
+    public ArrayList<Depot> depots;
 
     public LocationAdapter(Context context, Activity activity, ArrayList<Depot> depots){
         this.context = context;
@@ -50,6 +52,40 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
             public void onClick(View view) {
                 depots.remove(position);
                 notifyItemRemoved(position);
+            }
+        });
+
+        holder.referenceET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                depots.get(position).set_reference(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        holder.referenceET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                depots.get(position).set_price(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }

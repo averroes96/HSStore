@@ -105,9 +105,37 @@ public class AddPositionActivity extends Commons {
         String positionText = positionET.getText().toString().trim();
         String regionText = sharedPreferences.contains("selected_region")? sharedPreferences.getString("selected_region", ""): "CENTRE";
 
+        if(checkDepots()){
+            Toast.makeText(this, adapter.depots.get(0).get_reference(), Toast.LENGTH_SHORT).show();
+            for(Depot depot : adapter.depots){
+                depot.set_location(positionText);
+                depot.set_region(regionText);
+                dbHandler.addDepot(depot);
+            }
+            showSnackBarMessage(mainLayout, "Positions ajouté(s)");
+            positionET.setText("");
+            adapter.depots.clear();
+            Depot depot = new Depot();
+            adapter.depots.add(depot);
+            adapter.notifyDataSetChanged();
 
-        showSnackBarMessage(mainLayout, "Positions ajouté(s)");
-        positionET.setText("");
+        }
+        else{
+            showSnackBarMessage(mainLayout, "Certain champs requises sont vide!");
+        }
 
+
+    }
+
+    private boolean checkDepots() {
+
+        for(Depot depot : adapter.depots){
+            if(depot.get_reference().trim().isEmpty()){
+                return false;
+            }
+        }
+
+        String positionText = positionET.getText().toString().trim();
+        return !positionText.isEmpty();
     }
 }
